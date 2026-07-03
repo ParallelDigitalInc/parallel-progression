@@ -1,0 +1,659 @@
+{
+  "track": "Product Design",
+  "roles": [
+    "Intern",
+    "Associate Product Designer",
+    "Product Designer",
+    "Senior Product Designer",
+    "Staff Product Designer",
+    "Principal Product Designer",
+    "Design Lead",
+    "Associate Design Director",
+    "Design Director"
+  ],
+  "competencies": [
+    {
+      "name": "UX Design & Ideation",
+      "cells": {
+        "Intern": [
+          "Learning to think in flows. Building the eye for how good products work.",
+          "Sketches divergent options before committing to one.",
+          "Studies how good products work",
+          "Has a curious eye for behaviour and craft.",
+          "Brings fresh examples into design conversations."
+        ],
+        "Associate Product Designer": [
+          "Owns design for short flows, from larger scoped work",
+          "Asks scope-clarifying questions before starting. Doesn't begin designing on assumptions.",
+          "Includes edge cases, empty states and errors in the work, not just the happy path.",
+          "Treats microcopy as part of design."
+        ],
+        "Product Designer": [
+          "Owns whole flows end-to-end reliably without needing a lot of direction",
+          "Asks the right questions to sharpen a fuzzy brief, before solving.",
+          "Knows the common UX patterns well enough to pick the right one and adapt it.",
+          "Writes microcopy that's clear, intentional and on brand.",
+          "Proactively brings in research/data to influence design direction."
+        ],
+        "Senior Product Designer": [
+          "Reframes the fuzzy briefs, and holds together multi-flow work.",
+          "Reframes ambiguous briefs into sharper problems for the team.",
+          "Fluent in UX patterns and methodologies. Aware of when to use them and when to break them.",
+          "Surfaces potential technical/business constraints early, during discovery itself"
+        ],
+        "Staff Product Designer": [
+          "Takes on work with no precedent to lean on.",
+          "Frames work with no precedent to lean on; where no past project gives them a reference",
+          "Defines new UX patterns and documents, when existing ones don't fit.",
+          "Designs across multi-surface, multi-user systems where the right answer is undefined."
+        ],
+        "Principal Product Designer": [
+          "Deepest IC. Their framing on novel problems becomes the studio's reference.",
+          "Takes on category-defining problems no one has framed. Often work that defines new categories.",
+          "UX patterns influence people beyond the studio. Referenced by designers & client orgs.",
+          "Kills or redirects directions early with clear rationale",
+          "Decisions make future work faster."
+        ],
+        "Design Lead": [
+          "Great IC. Raises framing and quality across the projects they design on / steward.",
+          "Reframes ambiguous briefs across multiple projects, and unblocks when teams are stuck.",
+          "Owns design quality across multiple projects they're stewarding on.",
+          "Coaches ideation as a skill. Grows the team's ability to reframe, diverge, and choose themselves.",
+          "Their patterns travel beyond the studio. Designers and PMs at clients adopt them."
+        ],
+        "Associate Design Director": [
+          "Owns design quality across the studio's portfolio",
+          "Holds the framing standard across the projects they oversee",
+          "Owns design quality across a portfolio of projects at once.",
+          "Designers across different projects use their approach to framing as a role model."
+        ],
+        "Design Director": [
+          "Sets the studio's stance on what good problem framing, UX & Ideation work looks like.",
+          "Defines what great looks like across the whole competency at Parallel",
+          "Calls which kinds of problems the studio takes on and which it doesn't.",
+          "Shapes which problem areas the competency invests in and which approaches get retired."
+        ]
+      },
+      "slug": "ux-design-ideation"
+    },
+    {
+      "name": "Visual Craft.",
+      "cells": {
+        "Intern": [
+          "Building craft foundations and the eye for what works.",
+          "Typography, spacing and hierarchy in place on simple work.",
+          "Foundations of typography, spacing and hierarchy are in place.",
+          "Good judgement of craft. Able to pick between strong and weak craft decisions."
+        ],
+        "Associate Product Designer": [
+          "Executes craft reliably on standard work when the visual direction is clear.",
+          "Typography, layout, hierarchy and spacing are reliably right on standard work.",
+          "Treats motion and interaction as part of design.",
+          "Visual decisions are deliberate, not default."
+        ],
+        "Product Designer": [
+          "Strong craft bar, held across projects. Supports in raising the bar.",
+          "Hits a high craft bar consistently. Type, layout, spacing, hierarchy & motion design are reliably strong.",
+          "Restraint where it helps, polish where it earns its place.",
+          "Catches their own craft inconsistencies before reviews."
+        ],
+        "Senior Product Designer": [
+          "Craft level matches the best in their product category. Raises the craft bar in the studio.",
+          "Visual decisions are traceable, rooted to the problem.",
+          "Their critiques visibly change what ships.",
+          "Keeps dense, complex screens calm; craft holds on the boring surfaces too."
+        ],
+        "Staff Product Designer": [
+          "Their work influences the craft bar across",
+          "the studio.",
+          "Their craft sets the bar in the studio.",
+          "Picks visual direction with conviction. Cuts more than they add.",
+          "Their choices become the reference for other designers"
+        ],
+        "Principal Product Designer": [
+          "Studio's high-water mark on craft. Craft referenced beyond the studio",
+          "Craft referenced beyond the studio; defines craft where existing visual languages don’t fit.",
+          "Sets standards that hold across project types and product categories",
+          "Visual decisions feel inevitable. Restraint and conviction in the right places."
+        ],
+        "Design Lead": [
+          "Sets and holds the craft bar across projects they oversee.",
+          "Holds the craft bar on projects they oversee.",
+          "Catches drift before the client; names when work is fine but not great.",
+          "Guides designers toward a direction when there’s no clear reference to lean on."
+        ],
+        "Associate Design Director": [
+          "Holds the craft bar across a portfolio of projects. Supports the studio in collectively raising its bar.",
+          "Holds the craft bar across a portfolio of projects at once.",
+          "Sets studio-wide expectations on what shipped craft should feel like.",
+          "Spots quality drift across projects on time; recovers and course corrects teams."
+        ],
+        "Design Director": [
+          "Sets the studio's craft standard at the practice level.",
+          "Holds the studio’s craft standard at the practice level.",
+          "Sets what shipped Parallel craft should feel like. Their bar is the studio's bar.",
+          "Calls which work the studio takes on"
+        ]
+      },
+      "slug": "visual-craft"
+    },
+    {
+      "name": "Taste & Judgement",
+      "cells": {
+        "Intern": [
+          "Not evaluated at this level"
+        ],
+        "Associate Product Designer": [
+          "Forming a POV. Can say why one direction is better.",
+          "Says why one direction is better, with reasoning others can understand.",
+          "Updates the call when shown a better one."
+        ],
+        "Product Designer": [
+          "Picks well between plausible directions on clear briefs.",
+          "Holds a POV with confidence and stays open to being challenged.",
+          "Spots AI slop and pattern-matched borrowing in their own work",
+          "Calls when work is ready to ship."
+        ],
+        "Senior Product Designer": [
+          "Holds a POV that travels across projects. Other designers borrow their reasoning.",
+          "Names the tradeoff the room is avoiding.",
+          "Spots AI slop and pattern-matched copying that less experienced designers miss.",
+          "Calls ship-now vs not-ready cleanly."
+        ],
+        "Staff Product Designer": [
+          "Their judgment is the reference others use. SPDs take help from them for hard calls.",
+          "Names tradeoffs senior stakeholders haven’t surfaced.",
+          "Holds a strong and logical POV others can articulate even when they disagree.",
+          "Their critique on others' work changes how those designers think."
+        ],
+        "Principal Product Designer": [
+          "Their POV and judgement is sought across projects.",
+          "Holds the line on judgment under client, commercial and timeline pressure.",
+          "Their tradeoff calls become studio precedent for hard decisions.",
+          "Catches systemic slop or weak thinking across the studio's work, not just one project."
+        ],
+        "Design Lead": [
+          "Calibrates the designers on their team without overriding their decisions.",
+          "Strong POV that holds up across project types. Doesn't flatten other designers' POVs.",
+          "Catches systemic slop or weak thinking across the studio's work, not just one project.",
+          "Knows when to make the call themselves and when to let a designer learn by making it."
+        ],
+        "Associate Design Director": [
+          "Calibrates judgment across a portfolio.",
+          "Their POV holds up across project types, client categories and team configurations.",
+          "Calls which projects need a sharper stance vs which need execution focus.",
+          "Closes systemic gaps in judgment through coaching leads & ICs"
+        ],
+        "Design Director": [
+          "Reshapes how the studio thinks about good work.",
+          "Their judgment is, in effect, the studio’s - shaping what it takes on and says no to.",
+          "Their feedback shapes ADDs, Leads and Principals. Calibrates studio's senior layer.",
+          "Calls strategic tradeoffs at the practice level: growth vs craft, range vs depth."
+        ]
+      },
+      "slug": "taste-judgement"
+    },
+    {
+      "name": "Systems Thinking",
+      "cells": {
+        "Intern": [
+          "Curious about how parts fit together.",
+          "Asks how their screen connects to the rest of the product. Not just what's on it.",
+          "Reads the existing flow before designing into it. Doesn't drop work into a void."
+        ],
+        "Associate Product Designer": [
+          "Sees their work as part of something larger.",
+          "Frames their work in terms of what happens before and after.",
+          "Comfortable using and extending an existing design system.",
+          "Brings up upstream and downstream impact in review, not just the screen they made."
+        ],
+        "Product Designer": [
+          "Thinks about the whole experience around the work.",
+          "Knows when the right answer isn't just an interface. (Can be process, automation, copy tweaks).",
+          "Considers second order effects of a change. Asks what shifts downstream.",
+          "Uses and contributes to shared design components that consider multiple use cases."
+        ],
+        "Senior Product Designer": [
+          "Sees the whole system the work sits inside. i.e users, data, ops, business.",
+          "Ships outcomes that aren't always interfaces. Policy changes, workflow shifts, or even automations.",
+          "Identifies second, third order effects and systematic trade-offs. Evaluates the ripple effect on the system.",
+          "Designs patterns that survive future product additions without rewriting."
+        ],
+        "Staff Product Designer": [
+          "Sees systems no one else in the room is",
+          "seeing yet.",
+          "Ship solutions that span product, ops, business models, comms",
+          "Pulls the room up when the screen argument isn’t the real one.",
+          "Designs for failure. Asks how the system breaks and builds the safety net in."
+        ],
+        "Principal Product Designer": [
+          "Architects systems that span products, services and the studio's ways of working.",
+          "Their decisions hold up across years and product evolutions.",
+          "Designs for effects on the client’s broader business.",
+          "Finds the one change that makes the other ten unnecessary."
+        ],
+        "Design Lead": [
+          "Architects systems across multiple projects they oversee.",
+          "Surfaces when the studio’s approach creates waste or contradiction.",
+          "Brings systems thinking into early client conversations. Reshapes scope.",
+          "Anticipates how decisions interact with the client's larger product, ops, business model."
+        ],
+        "Associate Design Director": [
+          "Sees how projects, teams and clients interact as a system.",
+          "Designs how the studio operates. Workflow, staffing patterns, tools, rituals.",
+          "Scales quality across projects without flattening them. Each project still has its own voice.",
+          "Anticipates portfolio-level effects on capacity, talent and brand."
+        ],
+        "Design Director": [
+          "Sees the studio in its market as one system. Designs how it works and evolves.",
+          "Architects the studio’s strategic direction - what it stands for, where it grows, what it stops.",
+          "Reframes the studio’s approach when the field shifts, ahead of the shift, not after.",
+          "Anticipates how today's decisions shape the studio's position in three years."
+        ]
+      },
+      "slug": "systems-thinking"
+    },
+    {
+      "name": "Data & Evidence",
+      "cells": {
+        "Intern": [
+          "Not evaluated at this level."
+        ],
+        "Associate Product Designer": [
+          "Building basic evidence literacy.",
+          "Sits in user interviews and pulls useful signal from what they hear.",
+          "Reads the analytics dashboard for their project and uses what they see in design choices.",
+          "Catches themselves when they're treating one user quote as a trend. Aware whenever biases surface, and curbs them from influencing how evidence is communicated."
+        ],
+        "Product Designer": [
+          "Brings evidence into design decisions.",
+          "Designs directly point to rationale and user insights",
+          "Calls what to test and what to ship without testing.",
+          "Reads research and analytics with a designer's eye. Connects signal to next decisions.",
+          "Distinguishes signal from noise."
+        ],
+        "Senior Product Designer": [
+          "Knows what evidence the work actually needs.",
+          "Connects design choices to business levers. Activation, retention, revenue, support load.",
+          "Spots research dressing up a settled decision/opinion.",
+          "Designs the smallest test that answers the real question."
+        ],
+        "Staff Product Designer": [
+          "Makes defensible calls when evidence is weak, missing or contradictory",
+          "Designs evidence approaches on novel problems when there's no standard method.",
+          "Reads what the data isn't saying as carefully as what it is.",
+          "Their evidence calls hold up under client and engineering scrutiny."
+        ],
+        "Principal Product Designer": [
+          "Sets the studio’s bar for real evidence-driven design vs evidence-themed theatre.",
+          "Identifies contradictory or thin evidence, and makes defensible decisions. Other designers take it forward.",
+          "Defends the call when the client or engineering pushes back on it.",
+          "Spots when research is dressing up a decision that's already made."
+        ],
+        "Design Lead": [
+          "Calls what evidence & data each project needs.",
+          "Connects evidence across projects to studio-level decisions and client business levers.",
+          "Reads signal across multiple projects and spots patterns others miss."
+        ],
+        "Associate Design Director": [
+          "Sets the evidence approach for every project under them.",
+          "Keeps evidence rigour consistent across the portfolio; spots patterns to act on.",
+          "Pulls project evidence into how the studio sells; anchors how proposals get scoped.",
+          "Names what the studio runs, what it doesn’t, and what it expects clients to bring."
+        ],
+        "Design Director": [
+          "Sets Parallel's stance on data and evidence driven design across the practice.",
+          "Connects evidence to how the practice positions and sells.",
+          "Reads signal across the entire portfolio and calls what it means."
+        ]
+      },
+      "slug": "data-evidence"
+    },
+    {
+      "name": "Shipping & Delivery",
+      "cells": {
+        "Intern": [
+          "Learns how to document and do a clean hand-off from peers",
+          "Hands off clean files with layers named and correct components used",
+          "Meets deadlines and delivery expectations on small scoped tasks."
+        ],
+        "Associate Product Designer": [
+          "Ships scoped work well without dropping things.",
+          "Tracks the small things engineering needs. Edge cases, error states, empty states are part of the design.",
+          "Asks engineering questions early. Confirms what's buildable before designing too far in.",
+          "Engineering can build from their work without major rework."
+        ],
+        "Product Designer": [
+          "Ships their own work end-to-end. Engineering and PMs don't chase them.",
+          "Anticipates build constraints during design. Engages engineering when stuck.",
+          "Stays involved through build. Tests and catches issues before launch. Owns the work until it's live."
+        ],
+        "Senior Product Designer": [
+          "Engineers & PMs treat them as thought partners.",
+          "Their early reads on feasibility reshape what gets built.",
+          "Handoff lands cleanly. Engineering can build with confidence.",
+          "Knows when to reuse an existing pattern and when a new one is worth the cost. Outcome-led, not deadline-led."
+        ],
+        "Staff Product Designer": [
+          "Ships the most challenging outcomes. Engineers want them on the most challenging problems.",
+          "Engages engineering on architecture and tech tradeoffs",
+          "Engineering trusts their early reads. Their concerns reshape what gets built.",
+          "Drives outcomes where the path isn’t clear; surfaces issues early enough to change course."
+        ],
+        "Principal Product Designer": [
+          "Ships work no one else in the studio could ship. Their delivery is a standard in the studio.",
+          "Designs the shipping framework for the project before code starts.",
+          "Engineering treats them as a senior collaborator. Sits in early architecture conversations and shapes the build path.",
+          "Drives shipping outcomes on work where success criteria are part of the work."
+        ],
+        "Design Lead": [
+          "Ships flagship work. Owns shipping outcomes across projects they oversee.",
+          "Turns one-off shipping decisions into patterns.",
+          "Still ships flagship work themselves. Their hands-on work is where new patterns get tested.",
+          "Coaches designers through builds they haven’t faced before."
+        ],
+        "Associate Design Director": [
+          "Owns shipping outcomes across the portfolio.",
+          "Holds the studio's relationship with engineering and build partners across engagements.",
+          "Calibrates how teams work with engineering. Sets expectations across projects."
+        ],
+        "Design Director": [
+          "Owns shipping outcomes at the practice level.",
+          "The studio's reputation for landing work depends on them.",
+          "Reshapes how the studio works with engineering and build partners across the entire portfolio."
+        ]
+      },
+      "slug": "shipping-delivery"
+    },
+    {
+      "name": "AI Native",
+      "cells": {
+        "Intern": [
+          "Curious about AI as a craft.",
+          "Comfortable using AI tools for ideation, exploration and first drafts.",
+          "Curious about how AI products work under the hood."
+        ],
+        "Associate Product Designer": [
+          "AI is in their daily workflow. Spots AI slop in their own work.",
+          "Comfortable across multiple AI tools in their daily workflow.",
+          "Actively learns from their peers on various AI workflows and implements in their work.",
+          "Spots obvious AI slop in their own work before review."
+        ],
+        "Product Designer": [
+          "Designs AI-driven surfaces competently. Uses AI fluently in their own craft.",
+          "Designs AI-driven surfaces. Accounts for partial answers, latency and failure modes.",
+          "Has a working understanding of how AI products work. Context, prompts, tool use, common failure patterns.",
+          "Spots plausible-but-wrong AI output before it ships.",
+          "AI is part of how they design, prototype and iterate day to day."
+        ],
+        "Senior Product Designer": [
+          "Real technical depth in both designing for AI and working AI-natively.",
+          "Real technical depth in how AI works. Context, tool use, retrieval, agents, hallucination patterns.",
+          "Strong on AI-native flow design. Inline assistance, agentic patterns, partial answers and failure modes are part of the design."
+        ],
+        "Staff Product Designer": [
+          "Deepest AI fluency in the studio.",
+          "Has the deepest technical understanding of AI in the studio. Other designers learn AI from watching how they work.",
+          "Designs AI-native experiences that engineering and product borrow from.",
+          "Surfaces AI failure modes the team hasn't seen yet.",
+          "Sets the bar for what AI-fluent craft looks like inside the studio."
+        ],
+        "Principal Product Designer": [
+          "Designs AI experiences that advance the field.",
+          "Designs AI-native experiences that go beyond what the studio has shipped",
+          "Defines AI quality across the studio's portfolio.",
+          "Their AI craft transfers through the team. Designers borrow their patterns on the next project."
+        ],
+        "Design Lead": [
+          "Strong on both designing for AI and working AI-natively. Levels up their team.",
+          "AI is in the surfaces they ship and in how they design.",
+          "Helps PDs and SPDs on their team level up their AI fluency.",
+          "Calls AI quality across the team's work, not just their own."
+        ],
+        "Associate Design Director": [
+          "Sets Parallel's AI direction across the portfolio.",
+          "Sets what AI-fluent looks like across the studio's projects.",
+          "Reads AI fluency across teams. Closes gaps through hiring, coaching and process.",
+          "Holds the bar on AI quality across projects without writing the work themselves."
+        ],
+        "Design Director": [
+          "Sets Parallel's strategic direction on AI.",
+          "Reads where the field is going on AI. Positions the studio ahead of it.",
+          "Decides what kinds of AI work the studio is set up to take on and how AI fluency builds across the team.",
+          "Holds the AI craft bar at the practice level without doing the work themselves."
+        ]
+      },
+      "slug": "ai-native"
+    },
+    {
+      "name": "Influence",
+      "cells": {
+        "Intern": [
+          "Shows their work clearly in internal reviews.",
+          "Walks through their thinking in internal reviews. Names what they tried and why.",
+          "Receives feedback openly and acts on it."
+        ],
+        "Associate Product Designer": [
+          "Presents work confidently in internal and friendly client conversations",
+          "Receives critique without folding or getting defensive. Separates the work from themselves.",
+          "Knows when to handle a stakeholder question and when to flag to their lead.",
+          "Walks clients through their work without freezing. Answers questions in the moment."
+        ],
+        "Product Designer": [
+          "Presents work to clients and lands the recommendation.",
+          "Reads the room well. Knows when they've the client's buy-in, vs. when they quietly disengage.",
+          "Keeps the momentum going. Takes, and gives actionable feedback.",
+          "Pushes back when they should, with reasoning."
+        ],
+        "Senior Product Designer": [
+          "Senior client stakeholders take their recommendations seriously",
+          "Reads multi-stakeholder client rooms. Adjusts framing for decision-makers, influencers and blockers.",
+          "Anticipates pushback. Walks in prepared. Backs up with strong logic. Offers alternatives.",
+          "Designers seek their input; their feedback lands as direction."
+        ],
+        "Staff Product Designer": [
+          "Lands the toughest client conversations. Their storytelling is a reference.",
+          "Walks in and closes the conversations the project has been avoiding. Re-scoping, pushing back, sequencing tradeoffs no one wants to call.",
+          "Trusted by senior client stakeholders as a thinking partner, not just a vendor.",
+          "Their judgment transfers through the team without them being a manager."
+        ],
+        "Principal Product Designer": [
+          "Lands the hardest studio-wide conversations, including pushing back on attractive-but-weak work.",
+          "They get pulled into strategy calls beyond the design work.",
+          "Sought across projects for sharpening. Their critique and POV is the one designers actively want.",
+          "Raises the studio's bar of design conversation. Decisions get sharper around them."
+        ],
+        "Design Lead": [
+          "Carries senior client relationships across multiple projects.",
+          "Lands difficult client conversations on behalf of the team. Re-scoping, holding the line.",
+          "Sets how the team presents and pushes back.",
+          "Runs critiques that produce sharper work, not louder rooms. Their feedback is sought."
+        ],
+        "Associate Design Director": [
+          "Trusted as the studio's voice in CXO-level rooms.",
+          "Carries senior client relationships across multiple engagements. Trusted as the studio's voice in CXO-level rooms.",
+          "Lands the most difficult client conversations on behalf of teams. Holding the line, walking away when needed.",
+          "Calibrates how the studio gives and receives feedback. Sets the bar on critique culture."
+        ],
+        "Design Director": [
+          "Carries the studio's most senior client relationships. Their POV is sought at CXO level on strategy.",
+          "Lands the practice's hardest commercial conversations. Pricing, positioning, choosing what to bet on.",
+          "Coaches ADDs and senior ICs. Their feedback shapes the studio's senior layer over years.",
+          "Their voice carries inside the studio. People align around the sharpness of the reasoning."
+        ]
+      },
+      "slug": "influence"
+    },
+    {
+      "name": "Product Sense",
+      "cells": {
+        "Intern": [
+          "Curious about who the work is for and why.",
+          "Asks who the work is for and what they're trying to do."
+        ],
+        "Associate Product Designer": [
+          "Thinks about who uses the product and why.",
+          "Reads the client's product to understand what it does and who uses it, before designing into it.",
+          "Asks why a feature matters before how it should look.",
+          "Makes an active effort to start building product sense beyond design skills"
+        ],
+        "Product Designer": [
+          "Connects design choices to user outcomes.",
+          "Thinks about the client’s product and where their own work fits into it.",
+          "Asks why before what.",
+          "Connects design choices to user outcomes (activation, task completion, retention)",
+          "Questions how a decision affects business outcomes."
+        ],
+        "Senior Product Designer": [
+          "Thinks like a product owner.",
+          "Fluent in the client's business model, user economics and product strategy.",
+          "Connects design to conversion, retention, ARR; knows which metrics they’ll move.",
+          "Hears what the client cares about underneath what they ask for.",
+          "Recognises 'competitor-copying' asks, and handles well."
+        ],
+        "Staff Product Designer": [
+          "Operates with the client's strategy in their head.",
+          "Spots strategic gaps the client hasn't yet articulated",
+          "Their work moves revenue, retention and market position.",
+          "Their POV on the client's product gets taken seriously inside the client's own org."
+        ],
+        "Principal Product Designer": [
+          "Thinks like a senior client leader. Their POV is taken seriously beyond design.",
+          "Thinks with revenue, moat and market position directly, without translating from design",
+          "Surfaces strategic risks and opportunities the client team hasn’t named.",
+          "Recognises patterns across the studio’s client portfolio."
+        ],
+        "Design Lead": [
+          "Operates with multiple clients' businesses in their head.",
+          "Fluent in the business of every client they oversee, switching context smoothly.",
+          "Reframes a project when it's solving the wrong problem. Catches it before it costs the team weeks.",
+          "Their work moves client outcomes at flagship-project scale."
+        ],
+        "Associate Design Director": [
+          "Thinks across multiple client businesses at strategic depth.",
+          "Their POV shapes the studio’s commercial direction. Calls which clients to invest in, which to let go",
+          "Their work at portfolio scale shapes studio outcomes - revenue, reputation, positioning."
+        ],
+        "Design Director": [
+          "Thinks with the field. Calls the studio's strategic position.",
+          "Operates at the level of the field. Where design is going, where the market is going, where the studio fits.",
+          "Calls the studio's strategic position. What Parallel stands for, who it serves, what it says no to.",
+          "Connects work, people, brand and commercial into a coherent direction. Their POV is the studio's POV."
+        ]
+      },
+      "slug": "product-sense"
+    },
+    {
+      "name": "Designer Growth & Development",
+      "cells": {
+        "Intern": [
+          "-"
+        ],
+        "Associate Product Designer": [
+          "-"
+        ],
+        "Product Designer": [],
+        "Senior Product Designer": [],
+        "Staff Product Designer": [
+          "-"
+        ],
+        "Principal Product Designer": [
+          "-"
+        ],
+        "Design Lead": [
+          "Coaches designers in the studio. Curates a custom growth trajectory for coachees under them"
+        ],
+        "Associate Design Director": [
+          "Develops the studio's senior layer. Raises the bar with every hire."
+        ],
+        "Design Director": [
+          "Shapes how Parallel identifies and grows exceptional talent."
+        ]
+      },
+      "slug": "designer-growth-development"
+    },
+    {
+      "name": "Talent Dev / Develop the Best",
+      "cells": {
+        "Intern": [],
+        "Associate Product Designer": [],
+        "Product Designer": [],
+        "Senior Product Designer": [],
+        "Staff Product Designer": [],
+        "Principal Product Designer": [],
+        "Design Lead": [
+          "Designs each direct report's growth deliberately. Knows where they're reaching, where they're stuck, what stretches them next.",
+          "On projects, lifts the PDs and SPDs they work with. Coaches in the moment, in critique, in the work.",
+          "Runs 1:1s that move work and growth, and not just roles.",
+          "Supports collective growth and upskilling in the studio. Keeps the floor curious, and continuously learning to raise the overall craft bar.",
+          "Hires for their team. Interviews PDs and SPDs, calibrates them against the studio's bar."
+        ],
+        "Associate Design Director": [
+          "Manages DLs and senior ICs. Calibrates them on craft, judgment and leadership.",
+          "Hires for the senior layer. Each hire raises the bar, not just fills a gap.",
+          "Coaches in a way that moves work and growth, and not just roles.",
+          "Names where the studio needs to grow as a whole. Craft, judgment, AI fluency, wherever the gap is. Guides DLs and senior ICs in running the learning and conversations that recalibrate the mid and junior layers."
+        ],
+        "Design Director": [
+          "Designs the studio's growth philosophy. What we promote for, what we hire for, what we coach.",
+          "The studio's reputation for developing designers rests on them. Designers want to come here because of how people grow here."
+        ]
+      },
+      "slug": "talent-dev-develop-the-best"
+    }
+  ],
+  "tripod": {
+    "base": {
+      "competency": "AI Native",
+      "slug": "ai-native",
+      "label": "AI Native Foundations"
+    },
+    "groups": {
+      "ic": {
+        "label": "IC track",
+        "roles": [
+          "Intern",
+          "Associate Product Designer",
+          "Product Designer",
+          "Senior Product Designer",
+          "Staff Product Designer",
+          "Principal Product Designer"
+        ],
+        "legs": [
+          "ux-design-ideation",
+          "taste-judgement",
+          "product-sense"
+        ],
+        "head": [
+          "visual-craft",
+          "systems-thinking",
+          "data-evidence",
+          "shipping-delivery",
+          "influence"
+        ],
+        "note": "Legs explicitly specified for PD, SPD, Staff PD, Principal PD; same composition applied to Intern and Associate PD (not separately specified)."
+      },
+      "lead_plus": {
+        "label": "Lead+ track",
+        "roles": [
+          "Design Lead",
+          "Associate Design Director",
+          "Design Director"
+        ],
+        "legs": [
+          "product-sense",
+          "influence",
+          "systems-thinking"
+        ],
+        "head": [
+          "ux-design-ideation",
+          "visual-craft",
+          "taste-judgement",
+          "data-evidence",
+          "shipping-delivery",
+          "talent-dev-develop-the-best"
+        ]
+      }
+    }
+  }
+}
