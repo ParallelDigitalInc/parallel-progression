@@ -69,11 +69,36 @@
   .rung{position:relative;margin-bottom:22px;}
   .node{position:absolute;left:-30px;top:22px;width:20px;height:20px;border-radius:50%;background:#FFF;
     border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;
-    font-size:8.5px;font-weight:700;color:var(--faint);z-index:2;}
+    font-size:8.5px;font-weight:700;color:var(--faint);z-index:2;
+    transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;}
+  .card{background:#FFF;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px 18px;
+    transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;}
+  .card .lvl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--faint);margin-bottom:4px;transition:color .2s ease;}
+
+  /* Reveal: rungs rise in as they enter the viewport (stagger set in JS). */
+  .rung{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease;}
+  .rung.in{opacity:1;transform:none;}
+
+  /* Hover: the card lifts and tints to its track; the node echoes it. */
+  @media(hover:hover){
+    .rung:hover .card{transform:translateY(-2px);box-shadow:0 12px 30px rgba(22,22,22,.08);}
+    .track.with .rung:hover .card{border-color:var(--with-line);}
+    .track.for .rung:hover .card{border-color:var(--for-line);}
+    .track.with .rung:hover .node{border-color:var(--with);color:var(--with-ink);}
+    .track.for .rung:hover .node{border-color:var(--for);color:var(--for-ink);}
+  }
+
+  /* Viewing: the rung nearest the centre of the viewport while you scroll. */
+  .track.with .rung.viewing .node{background:var(--with-soft);border-color:var(--with);color:var(--with-ink);transform:scale(1.15);}
+  .track.for .rung.viewing .node{background:var(--for-soft);border-color:var(--for);color:var(--for-ink);transform:scale(1.15);}
+  .track.with .rung.viewing .card{border-color:var(--with-line);}
+  .track.for .rung.viewing .card{border-color:var(--for-line);}
+  .track.with .rung.viewing .lvl{color:var(--with-ink);}
+  .track.for .rung.viewing .lvl{color:var(--for-ink);}
+
+  /* Yours (after the quiz): the strongest state, wins over viewing. */
   .track.with .rung.yours .node{background:var(--with);border-color:var(--with);color:#FFF;}
   .track.for .rung.yours .node{background:var(--for);border-color:var(--for);color:#FFF;}
-  .card{background:#FFF;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px 18px;}
-  .card .lvl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--faint);margin-bottom:4px;}
   .card .name{font-size:17px;font-weight:600;line-height:1.25;margin-bottom:8px;}
   .track.with .rung.yours .name{color:var(--with-ink);}
   .track.for .rung.yours .name{color:var(--for-ink);}
@@ -351,7 +376,10 @@
     if (el && DEMO_FORCED) el.href = 'index.html?demo=1';
   });
 
-  function show(view) { document.body.dataset.view = view; }
+  function show(view) {
+    document.body.dataset.view = view;
+    if (view === 'guide') setTimeout(queueLadderTick, 60);
+  }
 
   async function boot() {
     if (sb) {
@@ -391,7 +419,44 @@
   document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
     tracks.setAttribute('data-view', b.dataset.track);
+    queueLadderTick();
   }));
+
+  /* ---------- Ladder microinteractions ----------
+     Reveal: rungs rise in with a small stagger as they enter the viewport.
+     Viewing: the rung crossing a band at 40% of the viewport gets a tinted
+     node + level label, so the rail doubles as a "you are here" while reading.
+     Driven by a rAF scroll handler (IntersectionObserver is unreliable in
+     embedded webviews and this needs to work everywhere). */
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const allRungs = Array.prototype.slice.call(document.querySelectorAll('.rung'));
+  if (REDUCED) allRungs.forEach(r => r.classList.add('in'));
+  let ladderTicking = false;
+  function ladderTick() {
+    ladderTicking = false;
+    const vh = innerHeight;
+    const visible = allRungs.filter(r => r.offsetParent !== null);
+    visible.forEach((r, i) => {
+      if (!r.classList.contains('in') && r.getBoundingClientRect().top < vh * 0.92) {
+        if (!REDUCED) r.style.transitionDelay = i * 70 + 'ms';
+        r.classList.add('in');
+        setTimeout(() => { r.style.transitionDelay = ''; }, i * 70 + 500);
+      }
+    });
+    const bandY = vh * 0.4;
+    let current = null;
+    visible.forEach(r => {
+      const b = r.getBoundingClientRect();
+      if (b.top <= bandY && b.bottom >= bandY) current = r;
+    });
+    visible.forEach(r => r.classList.toggle('viewing', r === current));
+  }
+  // Trailing timeout throttle (not rAF: embedded webviews suspend rAF callbacks).
+  function queueLadderTick() {
+    if (!ladderTicking) { ladderTicking = true; setTimeout(ladderTick, 40); }
+  }
+  addEventListener('scroll', queueLadderTick, { passive: true });
+  addEventListener('resize', queueLadderTick, { passive: true });
 
   /* ---------- Quiz data ---------- */
   const Q = [
