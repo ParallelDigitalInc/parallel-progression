@@ -1,8 +1,8 @@
-/* Parallel Progression — option 4a from "Progression Explorations", extended with three
+/* Parallel Progression: option 4a from "Progression Explorations", extended with three
    "actionable progress" layout explorations:
-     A · Tripod-led  — 4a with a gap strip, rating dots, and a focus queue
-     B · Spider-led  — radar chart (ratings vs the desired-role bar) as the hero
-     C · Plan        — the comparison table as an ordered action plan
+     A · Tripod-led: 4a with a gap strip, rating dots, and a focus queue
+     B · Spider-led: radar chart (ratings vs the desired-role bar) as the hero
+     C · Plan: the comparison table as an ordered action plan
    Progress = gap to the desired role. Switch layouts with the pill, bottom left. */
 
 (() => {
@@ -11,7 +11,7 @@
   const LS_DEMO_USER = 'parallel-progression-demo-user-v1';
 
   // ---------- Auth / Supabase ----------
-  // ADMIN MASTER LIST — only these emails see the Admin view and can read every
+  // ADMIN MASTER LIST: only these emails see the Admin view and can read every
   // user's data. Add rollout admins here (lowercase), and MIRROR the same list in
   // is_admin() in schema.sql so the database enforces it too (RLS), not just the UI.
   const SUPERADMINS = [
@@ -21,7 +21,7 @@
     'kriti@parallelhq.com'          // Human Resources
   ];
   const CFG = window.PP_CONFIG || {};
-  // ?demo=1 forces local demo mode even when Supabase is configured — for testing.
+  // ?demo=1 forces local demo mode even when Supabase is configured (for testing).
   const DEMO_FORCED = new URLSearchParams(location.search).has('demo');
   const sb = (!DEMO_FORCED && CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase)
     ? window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY)
@@ -57,7 +57,7 @@
   const head = () => trackCfg().head || IC_FALLBACK.head;
   const isLeadTrack = () => trackKeyFor(S.cur) === 'lead_plus';
 
-  // AI-Native Foundations quiz (ai-native.html) — level/persona names for the
+  // AI-Native Foundations quiz (ai-native.html): level/persona names for the
   // Admin AI view. Keep in sync with LNAME/PERSONA in ai-native.html.
   const AI_TRACKS = {
     with: {
@@ -119,8 +119,8 @@
   const cellOf = (slug, role) => { const c = bySlug(slug); return c ? (c.cells[role] || []) : []; };
   const nameOf = slug => NAMES[slug] || (bySlug(slug) ? clean(bySlug(slug).name) : slug);
 
-  // Assessment/ladder order: legs, base, head — as in the design logic.
-  // AI Native (the old tripod base) has moved to its own page — the rubric here
+  // Assessment/ladder order: legs, base, head, as in the design logic.
+  // AI Native (the old tripod base) has moved to its own page; the rubric here
   // assesses the three legs + the head. See baseSlug only for legacy data reads.
   const itemSlugs = () => [...legs(), ...head()];
   // Card list order: the rubric's own competency order, filtered to the tripod slugs.
@@ -148,11 +148,11 @@
     return { leading: count('leading'), established: count('established'), building: count('building'), unrated: m.filter(i => !i.rating).length };
   }
   // Priority: not-assessed first (you can't see the gap), then Building, then Established.
-  // Within a group: legs before base before head — the core three matter most.
+  // Within a group: legs before base before head: the core three matter most.
   const prio = it => it.rank * 10 + (it.isLeg ? 0 : it.isBase ? 1 : 2);
   const focusQueue = () => modelItems().filter(it => it.rank < 3).sort((a, b) => prio(a) - prio(b));
 
-  // The three-dot rating meter (from Plan view) — used across all layouts.
+  // The three-dot rating meter (from Plan view), used across all layouts.
   const meterHTML = slug => {
     const r = S.ratings[slug];
     const rk = r ? RANK[r] : 0;
@@ -212,7 +212,7 @@
           .select('role,desired_role').eq('id', USER.id).single();
         if (prof && CUR_OPTIONS.includes(prof.role)) S.cur = prof.role;
         if (prof && DES_OPTIONS.includes(prof.desired_role)) S.des = prof.desired_role;
-        // Roster is the source of truth for a person's real current role — it
+        // Roster is the source of truth for a person's real current role; it
         // wins over any stored value and auto-sets the right track on login.
         const { data: r } = await sb.from('roster')
           .select('role').eq('email', (USER.email || '').toLowerCase()).maybeSingle();
@@ -246,7 +246,7 @@
   }
 
   function enterApp() {
-    // Everyone walks the journey (onboarding → tripod), admins included — they
+    // Everyone walks the journey (onboarding → tripod), admins included; they
     // reach the team table via the Admin button whenever they want it. First
     // login (nothing rated, not yet onboarded) lands on the self-assessment
     // prompt; from there you can start it or skip. Once started or skipped, you
@@ -265,7 +265,7 @@
         options: { redirectTo: location.origin + location.pathname }
       });
     } else {
-      // Demo mode — no Supabase configured; fake a local session.
+      // Demo mode: no Supabase configured; fake a local session.
       USER = { id: 'local-demo', email: 'shreya@parallelhq.com', name: 'Shreya (demo)' };
       try { localStorage.setItem(LS_DEMO_USER, JSON.stringify(USER)); } catch (e) {}
       handleSignedIn({ id: USER.id, email: USER.email, user_metadata: { full_name: USER.name } });
@@ -331,7 +331,7 @@
       render();
       return;
     }
-    // ai_evaluations ships later than the rest of the schema — if the table
+    // ai_evaluations ships later than the rest of the schema, so if the table
     // isn't in Supabase yet, retry without it so the Progression view still loads.
     let { data, error } = await sb.from('users')
       .select('email,full_name,role,desired_role,created_at,self_evaluations(competency_slug,rating,evidence_note,updated_at),ai_evaluations(with_level,for_level,updated_at)')
@@ -352,11 +352,11 @@
   // Large tripod (4a). Halo/leg opacity handled by classes; hover via direct DOM.
   // Default (layout A): per-leg hues, rated legs firm up with a dot at the foot.
   // mono (layout B): all legs share a graphite tone; a rated leg fills with its
-  // RATING colour instead — progress is coloured into the leg, no extra dots.
+  // RATING colour instead: progress is coloured into the leg, no extra dots.
   function tripodSVG(opts) {
     const { mono = false, width = 560, height = 400 } = opts || {};
     const grads = ['g4U', 'g4T', 'g4P'];
-    // mono legs are slimmer — closer to the Figma's lighter tripod
+    // mono legs are slimmer, closer to the Figma's lighter tripod
     const halos = mono ? [
       '139,0 161,0 106,342 94,342',
       '269,0 291,0 286.5,323 273.5,323',
@@ -450,8 +450,8 @@
   }
 
   // Cleaner spider (borrowed from Progression's discrete-level thinking):
-  // only the rings that mean something — your role (solid), the desired-role bar
-  // (dashed), the ladder's edge (faint) — no fill, and dots only where you've
+  // only the rings that mean something: your role (solid), the desired-role bar
+  // (dashed), the ladder's edge (faint); no fill, and dots only where you've
   // rated. Everything else was chart furniture.
   function radarWebSVG() {
     const items = modelItems();
@@ -522,7 +522,7 @@
   // Tripod mark (landing hero + onboarding preview). Reads top-to-bottom as the
   // idea in the copy: a head the three legs hold up (every other skill), three
   // core-competency legs, and the AI-native foundation they all stand on.
-  // Dimensional, not wireframe — solid legs with a lit edge, a glossy head plate,
+  // Dimensional, not wireframe: solid legs with a lit edge, a glossy head plate,
   // and a grounded base carrying a faint "network" motif for the AI foundation.
   function markSVG(width, height) {
     return `<svg width="${width}" height="${height}" viewBox="0 0 280 250" style="display:block;">
@@ -569,7 +569,7 @@
     </svg>`;
   }
 
-  // Illustrative spider (onboarding preview) — static sample shape, not data.
+  // Illustrative spider (onboarding preview): static sample shape, not data.
   function sampleSpiderSVG(size) {
     const CX = 75, CY = 70, R = 58;
     const N = 9;
@@ -591,16 +591,16 @@
 
   const googleG = `<svg width="18" height="18" viewBox="0 0 18 18" style="display:block;"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>`;
 
-  // The hero visual — Shreya's Figma "Table → Tripod" motion (node 146:5275),
+  // The hero visual: Shreya's Figma "Table → Tripod" motion (node 146:5275),
   // rebuilt at the frame's native scale (a 560×716 stage) and scaled to fit.
   // The rubric TABLE (front) dissolves and the TRIPOD (behind) assembles: legs
   // reuse the app's tripodSVG, the head-card carries the exported spider
   // (Group 7.svg) + competency pills, three rotated leg labels sit on the legs,
   // and the AI-native base line fades in last. All timing/easing/looping lives
-  // in the anim-* keyframes in styles.css. Decorative — aria-hidden.
+  // in the anim-* keyframes in styles.css. Decorative; aria-hidden.
   const ANIM_DIR = 'assets/animation-assets/';
   function animVizHTML() {
-    // Table skeleton bars — two per cell (100px + 72px), three columns.
+    // Table skeleton bars: two per cell (100px + 72px), three columns.
     const cols = [169, 299, 429];
     const bars = [130.5, 250.5, 370.5, 490.5].map(y => cols.map(x =>
       `<i class="anim-bar" style="left:${x}px;top:${y}px;width:100px;"></i><i class="anim-bar" style="left:${x}px;top:${y + 20}px;width:72px;"></i>`).join('')).join('');
@@ -614,7 +614,7 @@
       ['Data & Evidence', '#6FBF8F', false], ['Shipping & Delivery', '#6FBF8F', false], ['Influence', '#FC8C67', false]]
       .map(([t, c, on]) => `<div class="anim-pill${on ? ' on' : ''}"><i style="background:${c};"></i>${esc(t)}</div>`).join('');
     // Render the legs with no focused leg (default S.focus would give the UX leg
-    // an extra halo/opacity outline — not wanted in the static hero).
+    // an extra halo/opacity outline, not wanted in the static hero).
     const savedFocus = S.focus;
     S.focus = null;
     const legsSVG = tripodSVG({ width: 448, height: 320 });
@@ -657,7 +657,7 @@
     </div>`;
   }
 
-  // Onboarding popup — a modal over the app, so the tripod + rubrics view shows
+  // Onboarding popup: a modal over the app, so the tripod + rubrics view shows
   // blurred behind it (same .overlay blur as the assessment popup). No dismiss
   // on the backdrop: you either start or skip.
   function onboardModalHTML() {
@@ -673,7 +673,7 @@
     </div>`;
   }
 
-  // Export the admin table as CSV — opens directly in Google Sheets / Excel /
+  // Export the admin table as CSV; opens directly in Google Sheets / Excel /
   // Numbers. Mirrors the on-screen table for whichever admin view is active.
   function exportAdminCSV() {
     const rows = S.adminData || [];
@@ -875,7 +875,7 @@
   }
 
   // Card anatomy per the Figma: serif title left, status cluster (chip + meter)
-  // right, no CURRENT/DESIRED column labels — the compare bar sets the context.
+  // right, no CURRENT/DESIRED column labels; the compare bar sets the context.
   // Closed cards keep their one-line current/desired summary; only the expanded
   // bullet detail is hidden until opened.
   function cardHTML(slug) {
@@ -904,7 +904,7 @@
     </div>`;
   }
 
-  // "Compare [current] → to [desired]" — the top-level control, shared by the
+  // "Compare [current] → to [desired]": the top-level control, shared by the
   // tripod panel and the table view ('compact' variant).
   function compareBarHTML(cls) {
     const field = (tag, kind) => `<div class="compare-field">
@@ -936,7 +936,7 @@
       `<i title="${esc(it.name)}${it.rating ? ' · ' + it.rating : ' · not assessed'}"
         style="background:${it.rating ? RC[it.rating] : '#E9E9E9'};"></i>`).join('');
 
-    // One action, ever. Editing a rating lives on the card itself — click a
+    // One action, ever. Editing a rating lives on the card itself; click a
     // card's chip/dots to reopen the assessment at that competency.
     let text, action;
     if (rated === 0) {
@@ -962,7 +962,7 @@
   }
 
   function panelHTML() {
-    // Onboarding owns the first-run moment now — the panel always shows the
+    // Onboarding owns the first-run moment now, so the panel always shows the
     // slim status row, whose action adapts (start / continue / focus).
     return `<div class="panel" data-keepscroll="panel">
       ${compareBarHTML()}
@@ -1195,7 +1195,7 @@
     bindHovers();
   }
 
-  // Leg hover (tripod + labels) and "Leading" popover — direct DOM, no re-render.
+  // Leg hover (tripod + labels) and "Leading" popover: direct DOM, no re-render.
   function bindHovers() {
     const setLegHover = (i, on) => {
       const halo = root.querySelector(`[data-halo="${i}"]`);
@@ -1208,7 +1208,7 @@
       el.addEventListener('mouseenter', () => setLegHover(i, true));
       el.addEventListener('mouseleave', () => setLegHover(i, false));
     });
-    // Rating pills teach the scale on hover — the popover swaps to the hovered
+    // Rating pills teach the scale on hover: the popover swaps to the hovered
     // level's meaning (Leading also previews the next-role behaviours).
     const pop = root.querySelector('#rate-pop');
     if (pop) {

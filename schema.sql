@@ -1,4 +1,4 @@
--- Parallel Progression — Supabase schema
+-- Parallel Progression: Supabase schema
 -- Run this in the Supabase SQL editor (Dashboard → SQL Editor → New query).
 
 -- ---------- Superadmins ----------
@@ -77,7 +77,7 @@ create policy "evals: delete own"
 
 -- ---------- AI-Native Foundations quiz results ----------
 -- One row per user; upserted on each quiz completion (latest result wins).
--- ADDED 2026-07-04 — if the tables above already exist, run just this block.
+-- ADDED 2026-07-04. If the tables above already exist, run just this block.
 create table if not exists public.ai_evaluations (
   user_id uuid primary key references public.users (id) on delete cascade,
   with_level int not null check (with_level between 1 and 4),

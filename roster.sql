@@ -1,8 +1,8 @@
--- Parallel Progression — roster (email → role)
+-- Parallel Progression: roster (email → role)
 -- Run once in Supabase → SQL Editor. Seeds each person's real current role so
 -- login auto-resolves it (no manual role-picking). Re-runnable: upserts by email.
 -- Source: Master employee sheet, 2026-07. Muzammil Merchant (Visual Designer)
--- deliberately left out — no Visual track in the Product Design rubric yet.
+-- deliberately left out; no Visual track in the Product Design rubric yet.
 
 create table if not exists public.roster (
   email text primary key,
