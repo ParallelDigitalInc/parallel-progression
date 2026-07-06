@@ -247,14 +247,14 @@
 
   function enterApp() {
     // Everyone walks the journey (onboarding → tripod), admins included; they
-    // reach the team table via the Admin button whenever they want it. First
-    // login (nothing rated, not yet onboarded) lands on the self-assessment
-    // prompt; from there you can start it or skip. Once started or skipped, you
-    // go straight to the app on later logins.
+    // reach the team table via the Admin button whenever they want it.
     S.route = 'app';
-    // The onboarding prompt is a modal OVER the app (so the tripod + rubrics
-    // view sits blurred behind it, like the assessment popup).
-    S.onboard = (nRated() === 0 && !localStorage.getItem(LS_ONBOARDED));
+    // Nudge anyone who hasn't finished: the self-assessment overlay shows on
+    // entry whenever the assessment is incomplete, and keeps showing on later
+    // logins until it's done (skippers were never coming back on their own).
+    // Skip dismisses it for the session. Completed people go straight in and
+    // get an "Edit assessment" entry point in the status row instead.
+    S.onboard = nRated() < itemSlugs().length;
     render();
   }
 
@@ -662,12 +662,19 @@
   // on the backdrop: you either start or skip.
   function onboardModalHTML() {
     const first = (USER && USER.name || '').split(' ')[0];
+    const n = nRated(), total = itemSlugs().length, started = n > 0;
+    const eyebrow = started ? 'Pick up where you left off' : (first ? 'Welcome, ' + esc(first) : 'Welcome');
+    const title = started ? 'Finish your self-assessment' : 'First, a quick self-assessment';
+    const copy = started
+      ? `You've rated ${n} of ${total}. A couple more minutes and your tripod reflects where you actually stand, saved as you go.`
+      : `Before you view your tripod, rate yourself against your current role. It helps us map you to your tripod more accurately: ${total} competencies, about two minutes, saved as you go.`;
+    const cta = started ? `Finish self-assessment (${n}/${total})` : 'Start self-assessment';
     return `<div class="overlay">
       <div class="modal onboard-modal" data-stop="1">
-        <div class="eyebrow">${first ? 'Welcome, ' + esc(first) : 'Welcome'}</div>
-        <h2 class="onboard-modal-title">First, a quick self-assessment</h2>
-        <p class="onboard-modal-copy">Before you view your tripod, rate yourself against your current role. It helps us map you to your tripod more accurately: ${itemSlugs().length} competencies, about two minutes, saved as you go.</p>
-        <button class="btn-dark-lg" data-action="onboard-start">Start self-assessment</button>
+        <div class="eyebrow">${eyebrow}</div>
+        <h2 class="onboard-modal-title">${title}</h2>
+        <p class="onboard-modal-copy">${copy}</p>
+        <button class="btn-dark-lg" data-action="onboard-start">${cta}</button>
         <button class="onboard-skip" data-action="onboard-skip">Skip for now</button>
       </div>
     </div>`;
@@ -948,9 +955,11 @@
     } else {
       const next = focusQueue()[0];
       text = `${atBar} of ${items.length} at the bar`;
-      action = next
+      const primary = next
         ? `<button class="progress-start" data-action="focus:${esc(next.slug)}">Start with ${esc(next.name)} →</button>`
         : `<span class="progress-done">All at the bar. Bring it to your lead.</span>`;
+      // Completed the assessment: keep an always-available way to revise it.
+      action = `${primary}<button class="progress-edit" data-action="assess-open">Edit assessment</button>`;
     }
     return `<div class="progress-row">
       <div class="progress-left">
