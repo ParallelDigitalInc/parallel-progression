@@ -79,9 +79,9 @@
     leading: { bg: 'rgba(111,191,143,0.22)', fg: '#3F8A60' }
   };
   const MEAN = {
-    building: 'Building — working towards it; not yet consistently at this role’s bar.',
-    established: 'Established — meeting expectations for this role.',
-    leading: 'Leading — consistently showing next-role behaviours.'
+    building: 'Building: working towards it, not yet consistently at this role’s bar.',
+    established: 'Established: meeting expectations for this role.',
+    leading: 'Leading: consistently showing next-role behaviours.'
   };
   const RATES = ['building', 'established', 'leading'];
   const RANK = { building: 1, established: 2, leading: 3 };
@@ -334,7 +334,7 @@
       ({ data, error } = await sb.from('users')
         .select('email,full_name,role,desired_role,created_at,self_evaluations(competency_slug,rating,evidence_note,updated_at)')
         .order('email'));
-      if (!error) S.adminError = 'AI results table missing — run the ai_evaluations block from schema.sql in Supabase.';
+      if (!error) S.adminError = 'AI results table missing: run the ai_evaluations block from schema.sql in Supabase.';
       else S.adminError = error.message;
     }
     S.adminData = data || [];
@@ -436,7 +436,7 @@
   }
   function deltaPhrase(it) {
     const d = levelsToBar(it);
-    if (d == null) return 'Not assessed yet — a two-minute read.';
+    if (d == null) return 'Not assessed yet. A two-minute read.';
     if (d <= 0) return 'At the bar already.';
     if (d <= 0.5) return 'Half a level to the bar.';
     if (d <= 1) return 'One level to the bar.';
@@ -645,7 +645,7 @@
         <h1 class="landing-h1">The new rubrics<br>explained as a <span class="accent">tripod</span></h1>
         <p class="landing-sub">We’ve been talking about taste, product sense, POV, AI a lot recently.<br>The new rubric maps this to measurable growth.</p>
         <button class="btn-google" data-action="signin">${googleG}Continue with Google</button>
-        ${sb ? '' : '<div class="landing-demo-note">Supabase isn’t configured yet — sign-in runs in local demo mode.</div>'}
+        ${sb ? '' : '<div class="landing-demo-note">Supabase isn’t configured yet. Sign-in runs in local demo mode.</div>'}
         ${S.authError ? `<div class="landing-demo-note">Sign-in failed: ${esc(S.authError)}</div>` : ''}
       </div>
     </div>`;
@@ -660,7 +660,7 @@
       <div class="modal onboard-modal" data-stop="1">
         <div class="eyebrow">${first ? 'Welcome, ' + esc(first) : 'Welcome'}</div>
         <h2 class="onboard-modal-title">First, a quick self-assessment</h2>
-        <p class="onboard-modal-copy">Before you view your tripod, rate yourself against your current role. It helps us map you to your tripod more accurately — ${itemSlugs().length} competencies, about two minutes, saved as you go.</p>
+        <p class="onboard-modal-copy">Before you view your tripod, rate yourself against your current role. It helps us map you to your tripod more accurately: ${itemSlugs().length} competencies, about two minutes, saved as you go.</p>
         <button class="btn-dark-lg" data-action="onboard-start">Start self-assessment</button>
         <button class="onboard-skip" data-action="onboard-skip">Skip for now</button>
       </div>
@@ -704,7 +704,7 @@
           ...slugs.map(s => {
             const e = evals[s];
             if (!e) return '';
-            return e.note ? cap(e.rating) + ' — ' + e.note : cap(e.rating);
+            return e.note ? cap(e.rating) + ': ' + e.note : cap(e.rating);
           })
         ]);
       });
@@ -807,7 +807,7 @@
             <button class="seg-btn ${!ai ? 'on' : ''}" data-action="admin-view:progression">Progression</button>
             <button class="seg-btn ${ai ? 'on' : ''}" data-action="admin-view:ai">AI</button>
           </div>
-          ${rows && rows.length ? `<button class="admin-export" data-action="admin-export" title="Download as CSV — opens in Google Sheets, Excel or Numbers">
+          ${rows && rows.length ? `<button class="admin-export" data-action="admin-export" title="Download as CSV: opens in Google Sheets, Excel or Numbers">
             <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1.5" y="1.5" width="11" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1.5" y1="5.5" x2="12.5" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5.5" y1="5.5" x2="5.5" y2="12.5" stroke="currentColor" stroke-width="1.2"/></svg>
             Export CSV
           </button>` : ''}
@@ -944,7 +944,7 @@
       text = `${atBar} of ${items.length} at the bar`;
       action = next
         ? `<button class="progress-start" data-action="focus:${esc(next.slug)}">Start with ${esc(next.name)} →</button>`
-        : `<span class="progress-done">All at the bar — bring it to your lead.</span>`;
+        : `<span class="progress-done">All at the bar. Bring it to your lead.</span>`;
     }
     return `<div class="progress-row">
       <div class="progress-left">
@@ -1090,7 +1090,7 @@
             <div class="lead-pop" id="rate-pop">
               <div class="rate-pop-c" data-c="building">
                 <div class="lead-pop-title" style="color:${TAG.building.fg};">Building</div>
-                <div class="lead-pop-summary">Working toward it — not yet consistently at your current role's bar.</div>
+                <div class="lead-pop-summary">Working toward it, not yet consistently at your current role's bar.</div>
               </div>
               <div class="rate-pop-c" data-c="established">
                 <div class="lead-pop-title" style="color:${TAG.established.fg};">Established</div>
@@ -1120,7 +1120,7 @@
   function infoModalHTML() {
     const legNames = legs().map(nameOf).join(', ');
     const trackNote = isLeadTrack()
-      ? 'You’re on the Lead+ track — the legs shift to what holds up a lead.'
+      ? 'You’re on the Lead+ track: the legs shift to what holds up a lead.'
       : 'You’re on the IC track.';
     return `<div class="overlay" data-action="modal-close">
       <div class="modal info-modal" data-stop="1">
@@ -1130,14 +1130,14 @@
         <div class="info-rows">
           <div class="info-row">
             <svg width="36" height="32" viewBox="0 0 36 32"><rect x="5" y="4" width="26" height="14" rx="4" fill="none" stroke="#161616" stroke-width="1.2"/><line x1="11" y1="9" x2="19" y2="9" stroke="#CFCFCF" stroke-width="1.2"/><line x1="11" y1="13" x2="23" y2="13" stroke="#CFCFCF" stroke-width="1.2"/></svg>
-            <div><div class="info-row-title">The head — the rest you carry.</div><div class="info-row-sub">Every other competency expected at your role.</div></div>
+            <div><div class="info-row-title">The head: the rest you carry.</div><div class="info-row-sub">Every other competency expected at your role.</div></div>
           </div>
           <div class="info-row">
             <svg width="36" height="32" viewBox="0 0 36 32"><line x1="14" y1="4" x2="8" y2="28" stroke="#161616" stroke-width="1.2"/><line x1="18" y1="4" x2="18" y2="28" stroke="#161616" stroke-width="1.2"/><line x1="22" y1="4" x2="28" y2="28" stroke="#161616" stroke-width="1.2"/></svg>
-            <div><div class="info-row-title">The legs — the core three.</div><div class="info-row-sub">What holds you up at your level: ${esc(legNames)}.</div></div>
+            <div><div class="info-row-title">The legs: the core three.</div><div class="info-row-sub">What holds you up at your level: ${esc(legNames)}.</div></div>
           </div>
         </div>
-        <div class="info-foot">You'll rate yourself Building, Established or Leading on each competency — relative to your current role. A map, not a scorecard.</div>
+        <div class="info-foot">You'll rate yourself Building, Established or Leading on each competency, relative to your current role. A map, not a scorecard.</div>
       </div>
     </div>`;
   }
