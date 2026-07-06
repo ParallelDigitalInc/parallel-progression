@@ -57,6 +57,21 @@
   const head = () => trackCfg().head || IC_FALLBACK.head;
   const isLeadTrack = () => trackKeyFor(S.cur) === 'lead_plus';
 
+  // AI-Native Foundations quiz (ai-native.html) — level/persona names for the
+  // Admin AI view. Keep in sync with LNAME/PERSONA in ai-native.html.
+  const AI_TRACKS = {
+    with: {
+      label: 'Designing with AI', soft: '#F3EDFB', ink: '#7C4FD0',
+      levels: { 1: 'Dabbler', 2: 'Operator', 3: 'Fluent', 4: 'Orchestrator' },
+      personas: { 1: 'The Tourist', 2: 'The Regular', 3: 'The Pilot', 4: 'The Conductor' }
+    },
+    for: {
+      label: 'Designing for AI', soft: '#FAF1E8', ink: '#A9622C',
+      levels: { 1: 'Bolt-on', 2: 'Pattern-aware', 3: 'Trust & failure designer', 4: 'Systems & feedback designer' },
+      personas: { 1: 'The Magician', 2: 'The Matchmaker', 3: 'The Diplomat', 4: 'The Architect' }
+    }
+  };
+
   const RC = { building: '#D9A868', established: '#7C9EDC', leading: '#6FBF8F' };
   const TAG = {
     building: { bg: 'rgba(217,168,104,0.18)', fg: '#9C7335' },
@@ -86,7 +101,7 @@
     cur: 'Product Designer', des: 'Senior Product Designer',
     open: { 'ux-design-ideation': true }, ratings: {}, notes: {},
     focus: 'ux-design-ideation', modal: false, assess: false, step: 0, onboard: false,
-    adminData: null, adminError: null, chipOpen: false,
+    adminData: null, adminError: null, chipOpen: false, adminView: 'progression',
     adminWidth: localStorage.getItem('parallel-progression-admin-width-v1') || 'comfortable'
   };
   const ADMIN_COLW = { compact: 190, comfortable: 240, wide: 340 };
@@ -299,18 +314,29 @@
     render();
     if (!sb) {
       // Demo mode: only the local user's data exists.
+      let ai = null;
+      try { ai = JSON.parse(localStorage.getItem('parallel-progression-ai-result-v1') || 'null'); } catch (e) {}
       S.adminData = [{
         email: USER.email, full_name: USER.name, role: S.cur, desired_role: S.des,
         self_evaluations: Object.entries(S.ratings).map(([slug, rating]) =>
-          ({ competency_slug: slug, rating, evidence_note: S.notes[slug] || null }))
+          ({ competency_slug: slug, rating, evidence_note: S.notes[slug] || null })),
+        ai_evaluations: ai ? [ai] : []
       }];
       render();
       return;
     }
-    const { data, error } = await sb.from('users')
-      .select('email,full_name,role,desired_role,created_at,self_evaluations(competency_slug,rating,evidence_note,updated_at)')
+    // ai_evaluations ships later than the rest of the schema — if the table
+    // isn't in Supabase yet, retry without it so the Progression view still loads.
+    let { data, error } = await sb.from('users')
+      .select('email,full_name,role,desired_role,created_at,self_evaluations(competency_slug,rating,evidence_note,updated_at),ai_evaluations(with_level,for_level,updated_at)')
       .order('email');
-    if (error) S.adminError = error.message;
+    if (error) {
+      ({ data, error } = await sb.from('users')
+        .select('email,full_name,role,desired_role,created_at,self_evaluations(competency_slug,rating,evidence_note,updated_at)')
+        .order('email'));
+      if (!error) S.adminError = 'AI results table missing — run the ai_evaluations block from schema.sql in Supabase.';
+      else S.adminError = error.message;
+    }
     S.adminData = data || [];
     render();
   }
@@ -642,95 +668,156 @@
   }
 
   // Export the admin table as CSV — opens directly in Google Sheets / Excel /
-  // Numbers. Mirrors the on-screen table: one row per designer, one column per
-  // competency (cell = rating, with the note appended when present).
+  // Numbers. Mirrors the on-screen table for whichever admin view is active.
   function exportAdminCSV() {
     const rows = S.adminData || [];
-    const slugs = itemSlugs();
     const cell = v => {
       v = v == null ? '' : String(v);
       return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
     };
     const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-    const header = ['Designer', 'Email', 'Current role', 'Aiming for', 'Progress', ...slugs.map(nameOf)];
-    const lines = [header];
-    rows.forEach(u => {
-      const evals = {};
-      (u.self_evaluations || []).forEach(e => { evals[e.competency_slug] = { rating: e.rating, note: e.evidence_note || '' }; });
-      const n = slugs.filter(s => evals[s]).length;
-      lines.push([
-        u.full_name || '', u.email || '', u.role || '', u.desired_role || '', n + '/' + slugs.length,
-        ...slugs.map(s => {
-          const e = evals[s];
-          if (!e) return '';
-          return e.note ? cap(e.rating) + ' — ' + e.note : cap(e.rating);
-        })
-      ]);
-    });
+    let lines, name;
+    if (S.adminView === 'ai') {
+      name = 'parallel-ai-foundations';
+      lines = [['Designer', 'Email', 'Role', 'With AI level', 'With AI persona', 'For AI level', 'For AI persona', 'Taken on']];
+      rows.forEach(u => {
+        const r = (u.ai_evaluations || [])[0];
+        lines.push([
+          u.full_name || '', u.email || '', u.role || '',
+          r ? 'Level ' + r.with_level + ' · ' + AI_TRACKS.with.levels[r.with_level] : '',
+          r ? AI_TRACKS.with.personas[r.with_level] : '',
+          r ? 'Level ' + r.for_level + ' · ' + AI_TRACKS.for.levels[r.for_level] : '',
+          r ? AI_TRACKS.for.personas[r.for_level] : '',
+          r && r.updated_at ? String(r.updated_at).slice(0, 10) : ''
+        ]);
+      });
+    } else {
+      name = 'parallel-progression';
+      const slugs = itemSlugs();
+      lines = [['Designer', 'Email', 'Current role', 'Aiming for', 'Progress', ...slugs.map(nameOf)]];
+      rows.forEach(u => {
+        const evals = {};
+        (u.self_evaluations || []).forEach(e => { evals[e.competency_slug] = { rating: e.rating, note: e.evidence_note || '' }; });
+        const n = slugs.filter(s => evals[s]).length;
+        lines.push([
+          u.full_name || '', u.email || '', u.role || '', u.desired_role || '', n + '/' + slugs.length,
+          ...slugs.map(s => {
+            const e = evals[s];
+            if (!e) return '';
+            return e.note ? cap(e.rating) + ' — ' + e.note : cap(e.rating);
+          })
+        ]);
+      });
+    }
     const csv = '﻿' + lines.map(r => r.map(cell).join(',')).join('\r\n');
     const date = new Date().toISOString().slice(0, 10);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = `parallel-progression-${date}.csv`;
+    a.href = url; a.download = `${name}-${date}.csv`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  // The Progression view: one column per competency, rating tag + note per cell.
+  function adminProgressionTable(rows) {
+    const slugs = itemSlugs();
+    return `<div class="admin-scroll" data-keepscroll="admin" style="--admin-col:${ADMIN_COLW[S.adminWidth] || 240}px;"><table class="admin-table">
+        <thead><tr>
+          <th class="admin-sticky">Designer</th><th>Role</th><th>Aiming for</th><th>Progress</th>
+          ${slugs.map(s => `<th class="admin-comp">${esc(nameOf(s))}</th>`).join('')}
+        </tr></thead>
+        <tbody>
+          ${rows.map(u => {
+            const evals = {};
+            (u.self_evaluations || []).forEach(e => {
+              evals[e.competency_slug] = { rating: e.rating, note: e.evidence_note || '' };
+            });
+            const n = slugs.filter(s => evals[s]).length;
+            return `<tr>
+              <td class="admin-sticky"><div class="admin-name">${esc(u.full_name || '—')}</div><div class="admin-email">${esc(u.email)}</div></td>
+              <td>${esc(u.role || '—')}</td>
+              <td>${esc(u.desired_role || '—')}</td>
+              <td><span class="admin-progress">${n}/${slugs.length}</span></td>
+              ${slugs.map(s => {
+                const e = evals[s];
+                if (!e) return `<td class="admin-cell"><span class="admin-dash">—</span></td>`;
+                return `<td class="admin-cell">
+                  <span class="tagpill" style="background:${TAG[e.rating].bg};color:${TAG[e.rating].fg};">${e.rating.toUpperCase()}</span>
+                  ${e.note ? `<div class="admin-cell-note">${esc(e.note)}</div>` : ''}
+                </td>`;
+              }).join('')}
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table></div>`;
+  }
+
+  // The AI view: latest AI-Native Foundations quiz result per designer.
+  function adminAITable(rows) {
+    const trackCell = (r, key) => {
+      if (!r) return `<td class="admin-cell"><span class="admin-dash">—</span></td>`;
+      const t = AI_TRACKS[key], lvl = key === 'with' ? r.with_level : r.for_level;
+      return `<td class="admin-cell">
+        <span class="tagpill" style="background:${t.soft};color:${t.ink};">L${lvl} · ${esc(t.personas[lvl])}</span>
+        <div class="admin-cell-note">${esc(t.levels[lvl])}</div>
+      </td>`;
+    };
+    const taken = rows.filter(u => (u.ai_evaluations || []).length).length;
+    return `<div class="admin-scroll" data-keepscroll="admin" style="--admin-col:${ADMIN_COLW[S.adminWidth] || 240}px;"><table class="admin-table">
+        <thead><tr>
+          <th class="admin-sticky">Designer</th><th>Role</th>
+          <th class="admin-comp">${esc(AI_TRACKS.with.label)}</th>
+          <th class="admin-comp">${esc(AI_TRACKS.for.label)}</th>
+          <th>Taken on</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(u => {
+            const r = (u.ai_evaluations || [])[0] || null;
+            return `<tr>
+              <td class="admin-sticky"><div class="admin-name">${esc(u.full_name || '—')}</div><div class="admin-email">${esc(u.email)}</div></td>
+              <td>${esc(u.role || '—')}</td>
+              ${trackCell(r, 'with')}
+              ${trackCell(r, 'for')}
+              <td>${r && r.updated_at ? esc(String(r.updated_at).slice(0, 10)) : '<span class="admin-dash">—</span>'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      <div class="admin-ai-foot">${taken} of ${rows.length} have taken the quiz · <a href="ai-native.html${!sb ? '?demo=1' : ''}">open the field guide →</a></div>
+    </div>`;
+  }
+
   function renderAdmin() {
     const rows = S.adminData;
-    const slugs = itemSlugs();
+    const ai = S.adminView === 'ai';
     const body = rows === null
       ? `<div class="admin-loading">Loading team data…</div>`
       : rows.length === 0
         ? `<div class="admin-loading">No users yet.</div>`
-        : `<div class="admin-scroll" data-keepscroll="admin" style="--admin-col:${ADMIN_COLW[S.adminWidth] || 240}px;"><table class="admin-table">
-            <thead><tr>
-              <th class="admin-sticky">Designer</th><th>Role</th><th>Aiming for</th><th>Progress</th>
-              ${slugs.map(s => `<th class="admin-comp">${esc(nameOf(s))}</th>`).join('')}
-            </tr></thead>
-            <tbody>
-              ${rows.map(u => {
-                const evals = {};
-                (u.self_evaluations || []).forEach(e => {
-                  evals[e.competency_slug] = { rating: e.rating, note: e.evidence_note || '' };
-                });
-                const n = slugs.filter(s => evals[s]).length;
-                return `<tr>
-                  <td class="admin-sticky"><div class="admin-name">${esc(u.full_name || '—')}</div><div class="admin-email">${esc(u.email)}</div></td>
-                  <td>${esc(u.role || '—')}</td>
-                  <td>${esc(u.desired_role || '—')}</td>
-                  <td><span class="admin-progress">${n}/${slugs.length}</span></td>
-                  ${slugs.map(s => {
-                    const e = evals[s];
-                    if (!e) return `<td class="admin-cell"><span class="admin-dash">—</span></td>`;
-                    return `<td class="admin-cell">
-                      <span class="tagpill" style="background:${TAG[e.rating].bg};color:${TAG[e.rating].fg};">${e.rating.toUpperCase()}</span>
-                      ${e.note ? `<div class="admin-cell-note">${esc(e.note)}</div>` : ''}
-                    </td>`;
-                  }).join('')}
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table></div>`;
+        : ai ? adminAITable(rows) : adminProgressionTable(rows);
     return `<div class="admin-body">
       <div class="admin-head">
         <div>
-          <h1 class="admin-title">Team self-assessments</h1>
+          <h1 class="admin-title">${ai ? 'AI-Native Foundations' : 'Team self-assessments'}</h1>
           <div class="admin-sub">${rows ? rows.length + (rows.length === 1 ? ' designer' : ' designers') : ''}${sb ? '' : ' · demo mode (local data only)'}${S.adminError ? ' · ' + esc(S.adminError) : ''}</div>
         </div>
         <div class="admin-head-right">
+          <div class="seg-toggle inline">
+            <button class="seg-btn ${!ai ? 'on' : ''}" data-action="admin-view:progression">Progression</button>
+            <button class="seg-btn ${ai ? 'on' : ''}" data-action="admin-view:ai">AI</button>
+          </div>
           ${rows && rows.length ? `<button class="admin-export" data-action="admin-export" title="Download as CSV — opens in Google Sheets, Excel or Numbers">
             <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1.5" y="1.5" width="11" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1.5" y1="5.5" x2="12.5" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5.5" y1="5.5" x2="5.5" y2="12.5" stroke="currentColor" stroke-width="1.2"/></svg>
             Export CSV
           </button>` : ''}
-          <div class="admin-width">
+          ${ai ? '' : `<div class="admin-width">
             ${['compact', 'comfortable', 'wide'].map(w =>
               `<button class="${S.adminWidth === w ? 'on' : ''}" data-action="admin-width:${w}">${w}</button>`).join('')}
           </div>
           <div class="admin-legend">
             ${RATES.map(rt => `<span class="admin-legend-item"><i style="background:${RC[rt]};"></i>${rt.charAt(0).toUpperCase() + rt.slice(1)}</span>`).join('')}
-          </div>
+          </div>`}
         </div>
       </div>
       ${body}
@@ -916,7 +1003,7 @@
           </div>
           ${legLabels}
           <button class="tri-what" data-action="modal-open">What does this tripod mean?</button>
-          <a class="tri-foundation" href="ai-native.html">◈ AI-Native Foundations →</a>
+          <a class="tri-foundation" href="ai-native.html${DEMO_FORCED || !sb ? '?demo=1' : ''}">◈ AI-Native Foundations →</a>
         </div>
       </div>
       ${panelHTML()}
@@ -1179,6 +1266,7 @@
       setState({ adminWidth: w });
       return;
     }
+    if (a.startsWith('admin-view:')) { setState({ adminView: a.slice(11) }); return; }
     if (a === 'onboard-start') {
       try { localStorage.setItem(LS_ONBOARDED, '1'); } catch (err) {}
       S.onboard = false;

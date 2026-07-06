@@ -74,3 +74,32 @@ create policy "evals: update own"
 create policy "evals: delete own"
   on public.self_evaluations for delete
   using (auth.uid() = user_id);
+
+-- ---------- AI-Native Foundations quiz results ----------
+-- One row per user; upserted on each quiz completion (latest result wins).
+-- ADDED 2026-07-04 — if the tables above already exist, run just this block.
+create table if not exists public.ai_evaluations (
+  user_id uuid primary key references public.users (id) on delete cascade,
+  with_level int not null check (with_level between 1 and 4),
+  for_level int not null check (for_level between 1 and 4),
+  answers jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.ai_evaluations enable row level security;
+
+drop policy if exists "ai: read own or admin" on public.ai_evaluations;
+create policy "ai: read own or admin"
+  on public.ai_evaluations for select
+  using (auth.uid() = user_id or public.is_admin());
+
+drop policy if exists "ai: insert own" on public.ai_evaluations;
+create policy "ai: insert own"
+  on public.ai_evaluations for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists "ai: update own" on public.ai_evaluations;
+create policy "ai: update own"
+  on public.ai_evaluations for update
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

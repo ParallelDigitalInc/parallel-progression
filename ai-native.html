@@ -3,562 +3,580 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>The AI-Native Designer — A Field Guide · Parallel</title>
+<title>AI Native Design Foundations · Parallel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Figtree:ital,wght@0,300..800;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FFFFFF; --card:#FFFFFF; --ink:#161616;
-    --muted:#6A6A64; --faint:#9A9A94; --line:#ECECEC; --line-strong:#E2E1DD;
-    --with:#9F75E1; --with-ink:#7E52C8; --with-soft:#F4EFFC; --with-line:#E4D6F6;
-    --for:#C1793F;  --for-ink:#A9622C; --for-soft:#FAF1E8;  --for-line:#EEDAC6;
-    --radius:16px; --maxw:820px;
+    --paper:#FFFFFF; --ink:#161616; --muted:#6F6F6F; --faint:#9A9A9A;
+    --line:#ECECEC; --line-strong:#DCDCDC;
+    --with:#9B6FE0; --with-ink:#7C4FD0; --with-soft:#F3EDFB; --with-line:#E2D5F6;
+    --for:#C1793F;  --for-ink:#A9622C;  --for-soft:#FAF1E8;  --for-line:#EEDAC6;
+    --radius:14px;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{margin:0;background:var(--paper);color:var(--ink);font-size:14.5px;
     font-family:"Figtree",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-  body.noscroll{overflow:hidden;}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
-  .wrap.narrow{max-width:720px;}
   h1,h2,h3{font-family:"Libre Baskerville",Georgia,serif;font-weight:400;}
   .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:600;}
-  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
-  .dot.w{background:var(--with);} .dot.f{background:var(--for);}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 36px;}
+  .wrap.narrow{max-width:720px;}
+  body[data-view] section{display:none;}
+  body[data-view="guide"] #guide{display:block;}
+  body[data-view="quiz"] #quiz{display:block;}
+  body[data-view="result"] #result{display:block;}
+  body[data-view="gate"] #gate{display:block;}
+  body[data-view="boot"] #boot{display:flex;}
 
-  /* ---------------- GUIDE ---------------- */
-  header.hero{padding:36px 0 8px;text-align:center;}
-  header.hero .lede{margin-left:auto;margin-right:auto;}
-  header.hero .reframe{text-align:left;}
-  .hero .topline{display:flex;align-items:center;gap:16px;margin-bottom:56px;}
-  .hero .topline .rule{height:1px;background:var(--line);flex:1;}
-  .hero .topline .logo{height:17px;opacity:.9;display:block;}
-  .backlink{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--faint);text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+  /* ---------- App chrome ---------- */
+  .appbar{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;}
+  .appbar .inner{width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 36px;}
+  .appbar .logo{height:17px;display:block;}
+  .role-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);visibility:hidden;}
+  .role-chip .dot{width:6px;height:6px;border-radius:50%;background:#161616;display:inline-block;}
+
+  #boot{min-height:70vh;align-items:center;justify-content:center;color:var(--faint);font-size:13px;}
+
+  /* ---------- Gate ---------- */
+  #gate .wrap{max-width:520px;text-align:center;padding-top:120px;}
+  #gate h1{font-size:32px;line-height:1.25;margin:14px 0 12px;}
+  #gate p{font-size:14px;color:var(--muted);margin:0 0 28px;line-height:1.6;}
+  .btn-dark{display:inline-block;font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    border-radius:999px;padding:15px 32px;border:none;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;transition:background .15s;}
+  .btn-dark:hover{background:#3A3A3A;}
+
+  /* ---------- Guide ---------- */
+  .backlink{font-size:12.5px;font-weight:600;color:var(--faint);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
   .backlink:hover{color:var(--ink);}
-  .hero .eyebrow{display:block;margin-bottom:14px;}
-  h1{font-size:40px;line-height:1.25;letter-spacing:-.01em;margin:0 0 16px;}
-  h1 .post{font-style:italic;}
-  .lede{font-size:16px;line-height:1.6;max-width:52ch;color:rgba(22,22,22,.6);margin:0 0 8px;}
-  .reframe{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);}
-  .reframe div{padding:20px 26px 20px 0;}
-  .reframe div+div{padding-left:26px;border-left:1px solid var(--line);}
-  .reframe .tag{font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;}
-  .reframe .with .tag{color:var(--with-ink);} .reframe .for .tag{color:var(--for-ink);}
-  .reframe p{margin:0;font-size:13.5px;line-height:1.55;color:rgba(22,22,22,.65);}
-
-  .controls{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 90%,transparent);
-    backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line);margin-top:44px;}
-  .controls .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap;}
-  .seg{display:inline-flex;background:#FFF;border:1px solid var(--line);border-radius:999px;padding:4px;gap:2px;}
-  .seg button{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);border:0;background:transparent;padding:8px 18px;border-radius:999px;cursor:pointer;transition:background .18s,color .18s;font-family:inherit;}
-  .seg button[data-view="with"][aria-pressed="true"]{background:var(--with-soft);color:var(--with-ink);}
-  .seg button[data-view="for"][aria-pressed="true"]{background:var(--for-soft);color:var(--for-ink);}
+  #guide .head{padding:28px 0 0;}
+  #guide h1{font-size:40px;line-height:1.2;letter-spacing:-.01em;margin:18px 0 22px;}
+  .seg{display:inline-flex;background:#F4F4F4;border-radius:999px;padding:4px;gap:2px;}
+  .seg button{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+    border:0;background:transparent;padding:9px 18px;border-radius:999px;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s;font-family:inherit;}
+  .seg button[aria-pressed="true"]{background:#FFF;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08);}
   .seg button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
-  .hint{font-size:12px;color:var(--faint);}
 
-  .tracks{padding:44px 0 10px;}
-  .track{display:none;}
+  .track{display:none;padding:34px 0 8px;}
   .tracks[data-view="with"] .track.with{display:block;}
   .tracks[data-view="for"] .track.for{display:block;}
-  .track-head{margin-bottom:8px;}
-  .track-head .eyebrow{display:block;margin-bottom:10px;}
-  .track.with .track-head .eyebrow{color:var(--with-ink);} .track.for .track-head .eyebrow{color:var(--for-ink);}
-  .track-head h2{font-size:26px;margin:0 0 8px;line-height:1.2;letter-spacing:-.01em;}
-  .track-head .sub{font-size:14px;color:var(--muted);margin:0;max-width:52ch;}
+  .track-head h2{font-size:22px;margin:0 0 6px;letter-spacing:-.01em;}
+  .track-head .sub{font-size:13px;color:var(--muted);margin:0;}
 
-  .ladder{margin-top:24px;}
-  .rung{margin-bottom:14px;}
-  .node{display:none;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px 20px;transition:box-shadow .2s,border-color .2s;outline:none;}
-  .track.with .card:focus-visible{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--with);} .track.for .card:focus-visible{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--for);}
-  .card-top{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;flex-wrap:wrap;}
-  .lvl{font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:4px 10px;background:#F5F5F5;color:#8A8A8A;align-self:center;}
-  .track.with .lvl{background:var(--with-soft);color:var(--with-ink);}
-  .track.for .lvl{background:var(--for-soft);color:var(--for-ink);}
-  .name{font-family:"Libre Baskerville",serif;font-weight:400;font-size:17px;line-height:1.2;}
-  .persona-tag{font-size:12px;font-style:italic;font-family:"Libre Baskerville",serif;color:var(--faint);}
-  .essence{font-size:14px;color:rgba(22,22,22,.75);margin:0 0 14px;line-height:1.55;}
-  .meta{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:12px;}
-  .meta .row{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:start;}
-  .meta .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--faint);padding-top:2px;}
-  .meta .v{font-size:13px;color:rgba(22,22,22,.62);line-height:1.55;}
-  .meta .v b{font-weight:600;color:var(--ink);}
-  @media(hover:hover){
-    .card:hover{box-shadow:0 10px 30px -18px rgba(22,22,22,.25);}
-    .track.with .card:hover{border-color:var(--with-line);} .track.for .card:hover{border-color:var(--for-line);}
-  }
-  .measure{margin-top:10px;border-radius:var(--radius);padding:20px 24px;border:1px solid var(--line);}
-  .track.with .measure{background:var(--with-soft);border-color:var(--with-line);} .track.for .measure{background:var(--for-soft);border-color:var(--for-line);}
-  .measure .eyebrow{margin-bottom:11px;}
-  .track.with .measure .eyebrow{color:var(--with-ink);} .track.for .measure .eyebrow{color:var(--for-ink);}
-  .measure ol{margin:0;padding-left:18px;display:grid;gap:7px;}
-  .measure li{font-size:13px;color:rgba(22,22,22,.65);} .measure li b{font-weight:600;color:var(--ink);}
+  .ladder{position:relative;margin-top:26px;padding-left:30px;}
+  .ladder::before{content:"";position:absolute;left:9px;top:24px;bottom:24px;width:1px;background:var(--line);}
+  .rung{position:relative;margin-bottom:22px;}
+  .node{position:absolute;left:-30px;top:22px;width:20px;height:20px;border-radius:50%;background:#FFF;
+    border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;
+    font-size:8.5px;font-weight:700;color:var(--faint);z-index:2;}
+  .track.with .rung.yours .node{background:var(--with);border-color:var(--with);color:#FFF;}
+  .track.for .rung.yours .node{background:var(--for);border-color:var(--for);color:#FFF;}
+  .card{background:#FFF;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px 18px;}
+  .card .lvl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--faint);margin-bottom:4px;}
+  .card .name{font-size:17px;font-weight:600;line-height:1.25;margin-bottom:8px;}
+  .track.with .rung.yours .name{color:var(--with-ink);}
+  .track.for .rung.yours .name{color:var(--for-ink);}
+  .card .you-tag{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:3px 9px;margin-left:10px;vertical-align:2px;}
+  .track.with .you-tag{background:var(--with-soft);color:var(--with-ink);}
+  .track.for .you-tag{background:var(--for-soft);color:var(--for-ink);}
+  .card .essence{font-size:13.5px;color:rgba(22,22,22,.78);margin:0 0 14px;line-height:1.55;}
+  .card .meta{border-top:1px solid var(--line);padding-top:13px;display:grid;gap:7px;}
+  .card .meta .row{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:baseline;}
+  .card .meta .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--faint);white-space:nowrap;}
+  .card .meta .v{font-size:13px;color:rgba(22,22,22,.62);line-height:1.55;}
+  .card .meta .v b{font-weight:600;color:var(--ink);}
 
-  .cta{border-top:1px solid var(--line);margin-top:52px;padding:56px 0;text-align:center;}
-  .cta .eyebrow{display:block;margin-bottom:14px;}
-  .cta h2{font-size:28px;margin:0 auto 12px;max-width:20ch;line-height:1.25;letter-spacing:-.01em;}
-  .cta p{font-size:14px;color:var(--muted);max-width:48ch;margin:0 auto 26px;}
-  .cta .personas{display:inline-flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:26px;}
-  .chip{font-size:12px;font-style:italic;font-family:"Libre Baskerville",serif;border:1px solid var(--line);border-radius:999px;padding:6px 13px;color:var(--muted);}
+  .cta{margin:44px 0 64px;border-radius:24px;text-align:center;padding:52px 36px 48px;
+    background:linear-gradient(120deg,#FBF2F0 0%,#F7F2FB 55%,#F3F0FB 100%);}
+  .cta h2{font-size:34px;margin:0 0 10px;letter-spacing:-.01em;}
+  .cta p{font-size:13.5px;color:var(--muted);max-width:44ch;margin:0 auto 24px;line-height:1.6;}
+  .cta .personas{display:inline-flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px;}
+  .chip{font-size:12px;font-style:italic;font-family:"Libre Baskerville",serif;border:1px solid var(--line-strong);
+    border-radius:999px;padding:6px 13px;color:var(--muted);background:rgba(255,255,255,.6);}
   .chip.w{border-color:var(--with-line);color:var(--with-ink);} .chip.f{border-color:var(--for-line);color:var(--for-ink);}
+  .btn-quiz{display:inline-block;font-family:inherit;font-size:13.5px;font-weight:600;border-radius:999px;
+    padding:14px 28px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:background .15s;}
+  .btn-quiz:hover{background:#3A3A3A;}
 
-  .btn{display:inline-block;font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:15px 32px;border:none;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;transition:background .15s;}
-  .btn:hover{background:#3A3A3A;}
-  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink);}
-  .btn:focus-visible{outline:2px solid var(--with);outline-offset:2px;}
-
-  footer{border-top:1px solid var(--line);padding:26px 0 60px;}
-  footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:baseline;}
-  footer p{margin:0;font-size:12px;color:var(--faint);max-width:60ch;line-height:1.6;}
-  footer .mark{font-family:"Libre Baskerville",serif;font-style:italic;font-size:13px;color:var(--muted);}
-
-  /* ---------------- QUIZ MODAL ---------------- */
-  .modal{position:fixed;inset:0;z-index:100;background:var(--paper);overflow-y:auto;
-    opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;}
-  .modal.open{opacity:1;visibility:visible;}
-  .modalbar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line);}
-  .modalbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px;}
-  .closebtn{font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);background:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:6px 4px;}
-  .closebtn:hover{color:var(--ink);}
-  .closebtn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px;}
-  .modalbar .mark{font-family:"Libre Baskerville",serif;font-style:italic;font-size:14px;color:var(--muted);}
-
-  .qhead{padding:44px 0 26px;text-align:center;}
-  .qhead .eyebrow{display:block;margin-bottom:12px;}
-  .qhead p{margin:0 auto;}
-  .qhead h1{font-size:32px;line-height:1.25;margin:0 0 12px;}
-  .qhead h1 .it{font-style:italic;}
-  .qhead p{font-size:14px;color:rgba(22,22,22,.6);max-width:54ch;margin:0;line-height:1.6;}
-
-  .quizcard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px 36px;box-shadow:0 24px 60px rgba(0,0,0,.08);margin-bottom:26px;}
-  .qstart{text-align:center;padding:18px 0 8px;}
-  .qstart .badge{display:inline-flex;gap:8px;align-items:center;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--faint);margin-bottom:14px;}
-  .qstart h3{font-size:24px;margin:0 0 10px;}
-  .qstart p{font-size:13.5px;color:var(--muted);max-width:44ch;margin:0 auto 24px;}
-  .qbtn{font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:13px 26px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:background .15s,opacity .15s;}
-  .qbtn:hover{background:#3A3A3A;} .qbtn.ghost{background:transparent;color:var(--muted);} .qbtn.ghost:hover{background:transparent;color:var(--ink);} .qbtn:disabled{opacity:.35;cursor:not-allowed;}
-  .qbtn:focus-visible{outline:2px solid var(--with);outline-offset:2px;}
+  /* ---------- Quiz + Result pages ---------- */
+  .page-top{position:relative;text-align:center;padding:36px 0 0;}
+  .page-top .pback{position:absolute;left:0;top:36px;font-size:16px;color:var(--faint);background:none;border:0;cursor:pointer;padding:2px 8px;font-family:inherit;}
+  .page-top .pback:hover{color:var(--ink);}
+  .page-top h1{font-size:38px;line-height:1.2;margin:16px 0 0;letter-spacing:-.01em;}
+  .pagecard{background:#FFF;border:1px solid var(--line);border-radius:24px;padding:34px 38px;
+    box-shadow:0 24px 60px rgba(0,0,0,.07);margin:30px 0 22px;}
+  .caveat{font-size:11.5px;color:var(--faint);text-align:center;margin:0 0 60px;}
 
   .progress{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
   .pbar{flex:1;height:4px;background:#F1F1F1;border-radius:999px;overflow:hidden;}
   .pfill{height:100%;width:0;background:var(--with);border-radius:999px;transition:width .35s ease,background .35s ease;}
   .pcount{font-size:11.5px;font-weight:600;color:var(--faint);white-space:nowrap;}
-  .qaxis{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px;display:inline-flex;gap:7px;align-items:center;}
-  .qaxis.w{color:var(--with-ink);} .qaxis.f{color:var(--for-ink);}
-  .qtext{font-family:"Libre Baskerville",serif;font-weight:400;font-size:20px;line-height:1.35;margin:0 0 20px;}
+  .qaxis{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:10px;display:inline-flex;gap:7px;align-items:center;}
+  .qaxis .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .qaxis.w{color:var(--with-ink);} .qaxis.w .dot{background:var(--with);}
+  .qaxis.f{color:var(--for-ink);} .qaxis.f .dot{background:var(--for);}
+  .qtext{font-family:"Libre Baskerville",serif;font-weight:400;font-size:21px;line-height:1.4;margin:0 0 20px;}
   .opts{display:grid;gap:10px;}
-  .opt{text-align:left;font-family:inherit;font-size:14px;color:rgba(22,22,22,.8);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s;line-height:1.5;}
-  .opts.w .opt:hover{border-color:var(--with-line);background:var(--with-soft);} .opts.f .opt:hover{border-color:var(--for-line);background:var(--for-soft);}
+  .opt{text-align:left;font-family:inherit;font-size:14px;color:rgba(22,22,22,.8);background:#FFF;border:1px solid var(--line);
+    border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s;line-height:1.5;}
+  .opts.w .opt:hover{border-color:var(--with-line);background:var(--with-soft);}
+  .opts.f .opt:hover{border-color:var(--for-line);background:var(--for-soft);}
   .opt.sel{color:var(--ink);}
   .opts.w .opt.sel{border-color:var(--with);background:var(--with-soft);}
   .opts.f .opt.sel{border-color:var(--for);background:var(--for-soft);}
   .opt:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
-  .qnav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;}
 
-  .result{display:none;} .result.show{display:block;}
-  .quiz-body.hide{display:none;}
-  .res-personas{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
-  .pcard{border-radius:16px;padding:24px;border:1px solid var(--line);}
-  .pcard.w{background:var(--with-soft);border-color:var(--with-line);} .pcard.f{background:var(--for-soft);border-color:var(--for-line);}
-  .pcard .axis{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-  .pcard.w .axis{color:var(--with-ink);} .pcard.f .axis{color:var(--for-ink);}
-  .pcard .lvlline{font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+  .res-personas{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .pcard{border-radius:14px;padding:25px;border:1px solid var(--line);}
+  .pcard.w{background:linear-gradient(180deg,var(--with-soft),#FDFCFE);border-color:var(--with-line);}
+  .pcard.f{background:linear-gradient(180deg,var(--for-soft),#FEFCFA);border-color:var(--for-line);}
+  .pcard .axis{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+  .pcard .axis .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .pcard.w .axis{color:var(--with-ink);} .pcard.w .axis .dot{background:var(--with);}
+  .pcard.f .axis{color:var(--for-ink);} .pcard.f .axis .dot{background:var(--for);}
+  .pcard .lvlline{font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:2px;}
   .pcard .pname{font-family:"Libre Baskerville",serif;font-weight:400;font-size:26px;line-height:1.15;margin-bottom:10px;}
   .pcard.w .pname{color:var(--with-ink);} .pcard.f .pname{color:var(--for-ink);}
-  .pcard .pblurb{font-size:13.5px;color:rgba(22,22,22,.68);margin:0 0 16px;line-height:1.55;}
+  .pcard .pblurb{font-size:13px;color:rgba(22,22,22,.68);margin:0 0 16px;line-height:1.55;}
   .pcard .pnext{font-size:12.5px;color:var(--muted);border-top:1px solid rgba(22,22,22,.1);padding-top:12px;line-height:1.55;}
   .pcard .pnext b{color:var(--ink);font-weight:600;}
-  .res-map{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:stretch;margin-bottom:14px;}
-  .yaxis{display:flex;align-items:center;justify-content:center;}
-  .yaxis span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--for-ink);font-weight:600;}
-  .xaxis{display:flex;align-items:center;justify-content:center;margin-top:10px;}
-  .xaxis span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--with-ink);font-weight:600;}
-  .res-plot{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;aspect-ratio:16/7;min-height:150px;}
-  .res-plot .vline,.res-plot .hline{position:absolute;background:var(--line);}
-  .res-plot .vline{left:50%;top:0;bottom:0;width:1px;} .res-plot .hline{top:50%;left:0;right:0;height:1px;}
-  .res-plot .qlabel{position:absolute;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:8px 10px;}
-  .res-plot .marker{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 4px 14px rgba(22,22,22,.3);transform:translate(-50%,50%);transition:left .5s ease,bottom .5s ease;}
-  .res-quad{font-size:13.5px;color:rgba(22,22,22,.68);} .res-quad b{font-family:"Libre Baskerville",serif;font-weight:400;color:var(--ink);}
-  .res-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;align-items:center;}
-  .qcaveat{font-size:12px;color:var(--faint);max-width:60ch;margin:0 0 50px;line-height:1.6;}
+  .res-actions{display:flex;justify-content:space-between;align-items:center;margin-top:28px;flex-wrap:wrap;gap:12px;}
+  .res-actions .right{display:flex;gap:12px;align-items:center;}
+  .linkbtn{font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:none;border:0;cursor:pointer;padding:6px 0;}
+  .linkbtn:hover{color:var(--ink);}
+  .pillbtn{font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:13px 24px;cursor:pointer;transition:all .15s;}
+  .pillbtn.ghost{background:#FFF;color:var(--ink);border:1px solid var(--ink);}
+  .pillbtn.ghost:hover{box-shadow:0 4px 14px rgba(0,0,0,.1);}
+  .pillbtn.dark{background:var(--ink);color:#FFF;border:1px solid var(--ink);}
+  .pillbtn.dark:hover{background:#3A3A3A;}
 
   @media(max-width:860px){
-    .reframe{grid-template-columns:1fr;}
-    .reframe div+div{padding-left:0;border-left:0;border-top:1px solid var(--line);}
-    .reframe div{padding-right:0;}
+    #guide h1{font-size:32px;}
+    .res-personas{grid-template-columns:1fr;}
+    .pagecard{padding:26px 22px;}
+    .wrap{padding:0 22px;}
+    .appbar .inner{padding:0 22px;}
   }
-  @media(max-width:720px){.res-personas{grid-template-columns:1fr;}.res-map{grid-template-columns:1fr;}.yaxis{display:none;}.quizcard{padding:24px 20px;}}
-  @media(max-width:520px){.wrap{padding:0 18px;}header.hero{padding:42px 0 18px;}.meta .row{grid-template-columns:54px 1fr;gap:9px;}.qtext{font-size:1.2rem;}}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;}}
-  .reveal{opacity:0;transform:translateY(10px);}
-  .reveal.in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease;}
 </style>
 </head>
-<body>
+<body data-view="boot">
 
-<!-- ===================================================== GUIDE -->
-<header class="hero">
-  <div class="wrap">
-    <div class="topline">
-      <a class="backlink" href="index.html">← Back to Progression</a>
-      <span class="rule"></span>
-      <img class="logo" src="assets/parallel-logo.svg" alt="Parallel">
-    </div>
-    <span class="eyebrow">AI-Native Foundations</span>
-    <h1>The AI-native designer,<br><span class="post">in two muscles.</span></h1>
-    <p class="lede">“AI-native” gets used as one thing. It’s really two — and they grow independently. One is about how you <em>work</em>. The other is about what you <em>ship</em>.</p>
-    <div class="reframe">
-      <div class="with"><span class="tag"><span class="dot w"></span>Designing with AI</span><p>AI as your design partner. This is your craft and workflow — how a brief becomes a result.</p></div>
-      <div class="for"><span class="tag"><span class="dot f"></span>Designing for AI</span><p>AI as the product. This is what reaches the user — the interaction, the trust, the loop.</p></div>
-    </div>
+<header class="appbar">
+  <div class="inner">
+    <a href="index.html" id="logoLink"><img class="logo" src="assets/parallel-logo.svg" alt="Parallel"></a>
+    <span class="role-chip" id="roleChip"><span class="dot"></span><span id="roleName">—</span></span>
   </div>
 </header>
 
-<div class="controls">
-  <div class="wrap">
-    <div class="seg" role="group" aria-label="Choose which ladder to view">
-      <button data-view="with" aria-pressed="true">With AI · workflow</button>
-      <button data-view="for" aria-pressed="false">For AI · product</button>
-    </div>
-    <span class="hint">Two ladders. Read both, then take the quiz.</span>
-  </div>
-</div>
+<section id="boot"><span>Loading…</span></section>
 
-<main class="wrap">
-  <section class="tracks" data-view="with" id="tracks">
+<!-- ---------- Sign-in gate ---------- -->
+<section id="gate">
+  <div class="wrap">
+    <span class="eyebrow">AI Native Design Foundations</span>
+    <h1>For Parallel eyes —<br>sign in first.</h1>
+    <p>This field guide lives inside Progression. Sign in with your parallelhq.com account and come back through the tripod's foundation.</p>
+    <a class="btn-dark" id="gateBtn" href="index.html">Go to Progression →</a>
+  </div>
+</section>
+
+<!-- ---------- Guide ---------- -->
+<section id="guide">
+  <div class="wrap head">
+    <a class="backlink" id="backToApp" href="index.html">← Back to Progression</a>
+    <h1>The AI Native Design Foundations</h1>
+    <div class="seg" role="group" aria-label="Choose which ladder to view">
+      <button data-track="with" aria-pressed="true">Designing with AI</button>
+      <button data-track="for" aria-pressed="false">Designing for AI</button>
+    </div>
+  </div>
+
+  <div class="wrap tracks" data-view="with" id="tracks">
 
     <div class="track with">
       <div class="track-head">
-        <span class="eyebrow">Ladder A · Your workflow</span>
         <h2>Designing with AI</h2>
         <p class="sub">From asking a chatbot for help → to running a system that designs alongside you.</p>
       </div>
       <div class="ladder">
-        <div class="rung reveal" tabindex="0"><span class="node">L1</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 1</span><span class="name">Dabbler</span><span class="persona-tag">“The Tourist”</span></div>
+        <div class="rung" data-level="1"><span class="node">L1</span>
+          <div class="card"><div class="lvl">Level 1</div><div class="name">Dabbler<span class="you-tag" hidden>You</span></div>
             <p class="essence">One-off asks in a chat window. Single-turn, reactive, starts from zero every session.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">No saved context or setup. Output quality swings wildly because the model never has the background.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">Pastes a screen in, asks “improve the copy,” ships whatever comes back.</span></div></div></div></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">No saved context or setup. Output quality swings wildly because the model never has the background.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">Pastes a screen in, asks “improve the copy,” ships whatever comes back.</span></div></div></div></div>
 
-        <div class="rung reveal" tabindex="0"><span class="node">L2</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 2</span><span class="name">Operator</span><span class="persona-tag">“The Regular”</span></div>
+        <div class="rung" data-level="2"><span class="node">L2</span>
+          <div class="card"><div class="lvl">Level 2</div><div class="name">Operator<span class="you-tag" hidden>You</span></div>
             <p class="essence">Uses AI consistently for recurring tasks and writes constrained prompts. Still hand-drives every step.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">A few reused go-to prompts, can iterate on tone — but it’s all manual, one task at a time.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">Reliably drafts empty states, microcopy and first-pass flows before refining in Figma.</span></div></div></div></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">A few reused go-to prompts, can iterate on tone — but it’s all manual, one task at a time.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">Reliably drafts empty states, microcopy and first-pass flows before refining in Figma.</span></div></div></div></div>
 
-        <div class="rung reveal" tabindex="0"><span class="node">L3</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 3</span><span class="name">Fluent</span><span class="persona-tag">“The Pilot”</span></div>
+        <div class="rung" data-level="3"><span class="node">L3</span>
+          <div class="card"><div class="lvl">Level 3</div><div class="name">Fluent<span class="you-tag" hidden>You</span></div>
             <p class="essence">Sets the AI up <em>before</em> working — a living context file (brief, audience, voice, system rules) — and prototypes with a real model, not static mockups.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">Keeps a context doc; chains steps; <b>evaluates</b> output instead of accepting it. The honest test: would you feel the loss if AI were removed?</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">Builds a live-model prototype of a search-and-filter flow, sees responses take ~6s, and designs the latency state around real output.</span></div></div></div></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">Keeps a context doc; chains steps; <b>evaluates</b> output instead of accepting it. The honest test: would you feel the loss if AI were removed?</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">Builds a live-model prototype of a search-and-filter flow, sees responses take ~6s, and designs the latency state around real output.</span></div></div></div></div>
 
-        <div class="rung reveal" tabindex="0"><span class="node">L4</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 4</span><span class="name">Orchestrator</span><span class="persona-tag">“The Conductor”</span></div>
+        <div class="rung" data-level="4"><span class="node">L4</span>
+          <div class="card"><div class="lvl">Level 4</div><div class="name">Orchestrator<span class="you-tag" hidden>You</span></div>
             <p class="essence">Designs the workflow itself. Delegates multi-step work to agents and builds reusable scaffolding — skills, prompt-specs, MCP — then spends energy on direction and the quality bar.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">The conductor: hands the AI the right <b>context, components and criteria</b>, then judges the result. Builds assets the team reuses.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">Ships a reusable “Parallel screen generator” skill — design tokens, voice and component rules baked in — that the whole studio runs, then curates.</span></div></div></div></div>
-
-        <div class="measure reveal"><span class="eyebrow">How to measure Ladder A</span>
-          <ol><li>Don’t trust self-ratings — watch behaviour. What share of work <b>touches AI and could be handed off</b> without watching every output?</li>
-          <li>Persistent context, or a cold start every time?</li>
-          <li>Do they produce <b>reusable assets others adopt</b>?</li></ol></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">The conductor: hands the AI the right <b>context, components and criteria</b>, then judges the result. Builds assets the team reuses.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">Ships a reusable “Parallel screen generator” skill — design tokens, voice and component rules baked in — that the whole studio runs, then curates.</span></div></div></div></div>
       </div>
     </div>
 
     <div class="track for">
       <div class="track-head">
-        <span class="eyebrow">Ladder B · Your product</span>
         <h2>Designing for AI</h2>
         <p class="sub">From bolting on a chatbot → to designing the whole intelligent loop the user lives in.</p>
       </div>
       <div class="ladder">
-        <div class="rung reveal" tabindex="0"><span class="node">L1</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 1</span><span class="name">Bolt-on</span><span class="persona-tag">“The Magician”</span></div>
+        <div class="rung" data-level="1"><span class="node">L1</span>
+          <div class="card"><div class="lvl">Level 1</div><div class="name">Bolt-on<span class="you-tag" hidden>You</span></div>
             <p class="essence">Treats AI as a feature to add (“put a chatbot on it”). Designs only the happy path and the magic demo.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">The flow assumes AI always works. Onboarding over-promises “magic.” No failure states.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">A “Magic Fix” button that returns a flawless result in the mock — with no thought to when it doesn’t.</span></div></div></div></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">The flow assumes AI always works. Onboarding over-promises “magic.” No failure states.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">A “Magic Fix” button that returns a flawless result in the mock — with no thought to when it doesn’t.</span></div></div></div></div>
 
-        <div class="rung reveal" tabindex="0"><span class="node">L2</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 2</span><span class="name">Pattern-aware</span><span class="persona-tag">“The Matchmaker”</span></div>
+        <div class="rung" data-level="2"><span class="node">L2</span>
+          <div class="card"><div class="lvl">Level 2</div><div class="name">Pattern-aware<span class="you-tag" hidden>You</span></div>
             <p class="essence">Matches the interaction pattern to the task — automate vs. augment vs. converse — instead of chatbot-for-everything.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">Can justify why a feature is a background agent vs. a chat vs. an inline suggestion.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">Booking a slot = a silent background agent. A risky judgement call = AI <b>flags anomalies</b> for a human to decide.</span></div></div></div></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">Can justify why a feature is a background agent vs. a chat vs. an inline suggestion.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">Booking a slot = a silent background agent. A risky judgement call = AI <b>flags anomalies</b> for a human to decide.</span></div></div></div></div>
 
-        <div class="rung reveal" tabindex="0"><span class="node">L3</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 3</span><span class="name">Trust &amp; failure designer</span><span class="persona-tag">“The Diplomat”</span></div>
+        <div class="rung" data-level="3"><span class="node">L3</span>
+          <div class="card"><div class="lvl">Level 3</div><div class="name">Trust &amp; failure designer<span class="you-tag" hidden>You</span></div>
             <p class="essence">Designs for the messy reality of models: graceful failure, honest confidence, disclosure, latency and variance.</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">Every AI surface has a fallback. Copy communicates limits. The bot is clearly labelled a bot.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">“Here’s who we found” + a manual fix instead of an error. Support chat discloses it’s automated and sells the <b>benefit</b>, not the tech.</span></div></div></div></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">Every AI surface has a fallback. Copy communicates limits. The bot is clearly labelled a bot.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">“Here’s who we found” + a manual fix instead of an error. Support chat discloses it’s automated and sells the <b>benefit</b>, not the tech.</span></div></div></div></div>
 
-        <div class="rung reveal" tabindex="0"><span class="node">L4</span>
-          <div class="card"><div class="card-top"><span class="lvl">Level 4</span><span class="name">Systems &amp; feedback designer</span><span class="persona-tag">“The Architect”</span></div>
+        <div class="rung" data-level="4"><span class="node">L4</span>
+          <div class="card"><div class="lvl">Level 4</div><div class="name">Systems &amp; feedback designer<span class="you-tag" hidden>You</span></div>
             <p class="essence">Designs the full loop: feedback signals that teach the system, the right success metrics, and agents as a second kind of “user.”</p>
-            <div class="meta"><div class="row"><span class="k">Spot it</span><span class="v">Success is a <b>correction / edit rate</b>, not a vanity count. Explicit and implicit feedback are built into the UI.</span></div>
-            <div class="row"><span class="k">Example</span><span class="v">An AI draft generator measured by <b>edit distance</b>; a quick dismiss wired as a negative signal that visibly updates suggestions.</span></div></div></div></div>
-
-        <div class="measure reveal"><span class="eyebrow">How to measure Ladder B</span>
-          <ol><li>Failure and fallback states, or only the happy path?</li>
-          <li>Is the AI <b>honestly disclosed</b>?</li>
-          <li>Is there a feedback loop that improves the system?</li>
-          <li>What single metric defines success? (Edit / correction rate beats “engagement.”)</li></ol></div>
+            <div class="meta"><div class="row"><span class="k">Spot it →</span><span class="v">Success is a <b>correction / edit rate</b>, not a vanity count. Explicit and implicit feedback are built into the UI.</span></div>
+            <div class="row"><span class="k">Example →</span><span class="v">An AI draft generator measured by <b>edit distance</b>; a quick dismiss wired as a negative signal that visibly updates suggestions.</span></div></div></div></div>
       </div>
     </div>
 
-  </section>
-
-  <section class="cta">
-    <span class="eyebrow">Place yourself</span>
-    <h2>Which one are you?</h2>
-    <p>Eight quick questions place you on both ladders and hand you a persona for each. Honest answers, not aspirational ones.</p>
-    <div class="personas">
-      <span class="chip w">The Tourist</span><span class="chip w">The Pilot</span><span class="chip w">The Conductor</span>
-      <span class="chip f">The Magician</span><span class="chip f">The Diplomat</span><span class="chip f">The Architect</span>
-    </div>
-    <br>
-    <button class="btn" id="openQuiz">Take the quiz →</button>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <p>Synthesised from current writing on AI-native design and design-team maturity — including the UX Collective’s “Becoming an AI-Native Designer,” DieProduktMacher’s seven designer skills, and broader AI-native maturity models. Examples are illustrative and tuned to our context.</p>
-    <span class="mark">Win on taste.</span>
-  </div>
-</footer>
-
-<!-- ===================================================== QUIZ MODAL -->
-<div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-label="AI-Native Designer quiz">
-  <div class="modalbar">
-    <div class="wrap narrow">
-      <button class="closebtn" id="closeQuiz">← Back to the field guide</button>
-      <img src="assets/parallel-logo.svg" alt="Parallel" style="height:15px;opacity:.9;display:block;">
+    <div class="cta">
+      <h2>Which one are you?</h2>
+      <p>Eight quick questions place you on both ladders and hand you a persona for each :)</p>
+      <div class="personas">
+        <span class="chip w">The Tourist</span><span class="chip w">The Pilot</span><span class="chip w">The Conductor</span>
+        <span class="chip f">The Magician</span><span class="chip f">The Diplomat</span><span class="chip f">The Architect</span>
+      </div>
+      <br>
+      <button class="btn-quiz" id="openQuiz">Take the quiz →</button>
     </div>
   </div>
+</section>
 
+<!-- ---------- Quiz ---------- -->
+<section id="quiz">
   <div class="wrap narrow">
-    <div class="qhead">
+    <div class="page-top">
+      <button class="pback" id="quizBack" title="Back">←</button>
       <span class="eyebrow">The quiz</span>
-      <h1>Find your level,<br><span class="it">meet your persona.</span></h1>
-      <p>Eight quick questions — four on how you work, four on what you ship. Answer for the honest, typical you, not your best day. You’ll get a persona on each ladder and where you land on the map.</p>
+      <h1>Meet your AI persona</h1>
     </div>
-
-    <div class="quizcard">
-      <div class="quiz-body" id="quizBody">
-        <div class="qstart" id="qStart">
-          <span class="badge"><span class="dot w"></span><span class="dot f"></span>8 questions · ~2 minutes</span>
-          <h3>Which AI-native designer are you?</h3>
-          <p>No login, nothing saved. Pick the answer that sounds most like your default, not your aspiration.</p>
-          <button class="qbtn" id="startBtn">Start the quiz</button>
-        </div>
-
-        <div id="qStage" style="display:none;">
-          <div class="progress">
-            <div class="pbar"><div class="pfill" id="pfill"></div></div>
-            <span class="pcount" id="pcount">1 / 8</span>
-          </div>
-          <div id="qAxis" class="qaxis w"><span class="dot w"></span>Workflow · with AI</div>
-          <p class="qtext" id="qText">—</p>
-          <div class="opts" id="qOpts"></div>
-          <div class="qnav">
-            <button class="qbtn ghost" id="backBtn">← Back</button>
-            <span class="pcount" id="navHint">Pick one to continue</span>
-          </div>
-        </div>
+    <div class="pagecard">
+      <div class="progress">
+        <div class="pbar"><div class="pfill" id="pfill"></div></div>
+        <span class="pcount" id="pcount">1 / 8</span>
       </div>
-
-      <div class="result" id="qResult">
-        <div class="res-personas">
-          <div class="pcard w">
-            <div class="axis"><span class="dot w"></span>Designing with AI · workflow</div>
-            <div class="lvlline" id="rWLvl">Level — · —</div>
-            <div class="pname" id="rWName">—</div>
-            <p class="pblurb" id="rWBlurb">—</p>
-            <div class="pnext" id="rWNext">—</div>
-          </div>
-          <div class="pcard f">
-            <div class="axis"><span class="dot f"></span>Designing for AI · product</div>
-            <div class="lvlline" id="rFLvl">Level — · —</div>
-            <div class="pname" id="rFName">—</div>
-            <p class="pblurb" id="rFBlurb">—</p>
-            <div class="pnext" id="rFNext">—</div>
-          </div>
-        </div>
-
-        <div class="res-map">
-          <div class="yaxis"><span>For AI →</span></div>
-          <div>
-            <div class="res-plot" id="rPlot">
-              <div class="vline"></div><div class="hline"></div>
-              <div class="qlabel" style="top:0;left:0;">Sharp instincts</div>
-              <div class="qlabel" style="top:0;right:0;">AI-native</div>
-              <div class="qlabel" style="bottom:0;left:0;">Experimenting</div>
-              <div class="qlabel" style="bottom:0;right:0;">Fast hands</div>
-              <div class="marker" id="rMarker" style="left:50%;bottom:50%;"></div>
-            </div>
-            <div class="xaxis"><span>With AI →</span></div>
-          </div>
-        </div>
-        <p class="res-quad">You land in: <b id="rQuad" style="margin-left:6px;">—</b></p>
-
-        <div class="res-actions">
-          <button class="qbtn" id="retakeBtn">Retake</button>
-          <button class="qbtn ghost" id="closeQuiz2">Back to the ladders</button>
-        </div>
-      </div>
+      <div id="qAxis" class="qaxis w"><span class="dot"></span>Designing with AI</div>
+      <p class="qtext" id="qText">—</p>
+      <div class="opts" id="qOpts"></div>
     </div>
-
-    <p class="qcaveat">A self-assessment, not a verdict — answers reflect your honesty in the moment. The levels recalibrate fast, so retake it now and then.</p>
+    <p class="caveat">A self-assessment, not a verdict :)</p>
   </div>
-</div>
+</section>
 
+<!-- ---------- Result ---------- -->
+<section id="result">
+  <div class="wrap narrow">
+    <div class="page-top">
+      <button class="pback" id="resultBack" title="Back to the guide">←</button>
+      <span class="eyebrow">The result</span>
+      <h1>You seem to be...</h1>
+    </div>
+    <div class="pagecard">
+      <div class="res-personas">
+        <div class="pcard w">
+          <div class="axis"><span class="dot"></span>Designing with AI · workflow</div>
+          <div class="lvlline" id="rWLvl">Level — · —</div>
+          <div class="pname" id="rWName">—</div>
+          <p class="pblurb" id="rWBlurb">—</p>
+          <div class="pnext" id="rWNext">—</div>
+        </div>
+        <div class="pcard f">
+          <div class="axis"><span class="dot"></span>Designing for AI · product</div>
+          <div class="lvlline" id="rFLvl">Level — · —</div>
+          <div class="pname" id="rFName">—</div>
+          <p class="pblurb" id="rFBlurb">—</p>
+          <div class="pnext" id="rFNext">—</div>
+        </div>
+      </div>
+      <div class="res-actions">
+        <button class="linkbtn" id="backToLadders">Back to the ladders</button>
+        <div class="right">
+          <button class="pillbtn ghost" id="shareBtn">Share personas</button>
+          <button class="pillbtn dark" id="retakeBtn">Retake quiz</button>
+        </div>
+      </div>
+    </div>
+    <p class="caveat">Saved to your profile — retake it whenever, the levels recalibrate fast.</p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
 <script>
-  /* ---------- ladder toggle ---------- */
-  const tracks=document.getElementById('tracks');
-  document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
-    document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
-    tracks.setAttribute('data-view',b.dataset.view);
+  /* ---------- Auth gate ----------
+     Same origin as the app, so the Supabase session (or the demo user) set by
+     index.html is already in localStorage. No session and not demo → gate. */
+  const CFG = window.PP_CONFIG || {};
+  const DEMO_FORCED = new URLSearchParams(location.search).has('demo');
+  const DEMO_SUFFIX = DEMO_FORCED ? '?demo=1' : '';
+  const sb = (!DEMO_FORCED && CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase)
+    ? window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY)
+    : null;
+  const LS_AI_RESULT = 'parallel-progression-ai-result-v1';
+  let USER = null;
+
+  // Keep in-app links demo-aware so the gate doesn't trap local testing.
+  ['logoLink', 'backToApp', 'gateBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && DEMO_FORCED) el.href = 'index.html?demo=1';
+  });
+
+  function show(view) { document.body.dataset.view = view; }
+
+  async function boot() {
+    if (sb) {
+      const { data } = await sb.auth.getSession();
+      if (data && data.session) {
+        const u = data.session.user;
+        USER = { id: u.id, email: u.email };
+        sb.from('users').select('role').eq('id', USER.id).single()
+          .then(({ data: prof }) => { if (prof && prof.role) setRole(prof.role); });
+        loadSavedResult();
+        show('guide');
+      } else {
+        show('gate');
+      }
+      return;
+    }
+    // Demo mode (?demo=1, or no Supabase config): reuse the app's demo session.
+    let demo = null;
+    try { demo = JSON.parse(localStorage.getItem('parallel-progression-demo-user-v1') || 'null'); } catch (e) {}
+    if (demo || DEMO_FORCED) {
+      USER = demo || { id: 'local-demo', email: 'shreya@parallelhq.com' };
+      setRole('Demo mode');
+      loadSavedResult();
+      show('guide');
+    } else {
+      show('gate');
+    }
+  }
+
+  function setRole(role) {
+    document.getElementById('roleName').textContent = role;
+    document.getElementById('roleChip').style.visibility = 'visible';
+  }
+
+  /* ---------- Ladder toggle ---------- */
+  const tracks = document.getElementById('tracks');
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    tracks.setAttribute('data-view', b.dataset.track);
   }));
 
-  /* ---------- reveal ---------- */
-  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-    const io=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*40);io.unobserve(e.target);}}),{threshold:.12});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  }else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
-
-  /* ---------- modal open/close ---------- */
-  const modal=document.getElementById('quizModal');
-  function openModal(){modal.classList.add('open');document.body.classList.add('noscroll');modal.scrollTop=0;}
-  function closeModal(){modal.classList.remove('open');document.body.classList.remove('noscroll');}
-  document.getElementById('openQuiz').addEventListener('click',openModal);
-  document.getElementById('closeQuiz').addEventListener('click',closeModal);
-  document.getElementById('closeQuiz2').addEventListener('click',closeModal);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
-
-  /* ---------- quiz ---------- */
-  const Q=[
-    {axis:'with',q:'When you open an AI tool to help with a design task, you usually…',o:[
-      {t:'Type a quick one-off request and use whatever comes back.',l:1},
-      {t:'Reach for a prompt you’ve used before and refine the tone a few times.',l:2},
-      {t:'Point it at a context file you keep updated — brief, audience, voice, rules.',l:3},
-      {t:'Kick off an agent or skill you built that runs several steps on its own.',l:4}]},
-    {axis:'with',q:'Your prototypes are usually…',o:[
-      {t:'Static screens — I describe the AI behaviour in side notes.',l:1},
-      {t:'Static, but I’ve written the copy and states with AI’s help.',l:2},
-      {t:'Wired to a real model so I can feel the latency and variance.',l:3},
-      {t:'Generated by a setup I built, then I curate the output.',l:4}]},
-    {axis:'with',q:'If AI vanished from your workflow tomorrow…',o:[
-      {t:'I’d barely notice — I only dip in occasionally.',l:1},
-      {t:'I’d miss it for a few specific tasks.',l:2},
-      {t:'I’d feel it sharply — it’s woven through how I work.',l:3},
-      {t:'Half my pipeline would stop — I’ve built systems on it.',l:4}]},
-    {axis:'with',q:'Other designers on the team…',o:[
-      {t:'don’t really see how I use AI.',l:1},
-      {t:'sometimes ask me for a prompt that worked.',l:2},
-      {t:'borrow my context docs and my approach.',l:3},
-      {t:'run the reusable skills and scaffolding I’ve built.',l:4}]},
-    {axis:'for',q:'When you design an AI feature, you start with…',o:[
-      {t:'where to put the chatbot or the magic button.',l:1},
-      {t:'whether the task wants automation, augmentation, or conversation.',l:2},
-      {t:'what happens when the model is wrong or slow.',l:3},
-      {t:'the feedback loop that makes the system better over time.',l:4}]},
-    {axis:'for',q:'Your designs handle AI failure by…',o:[
-      {t:'…they don’t — I design the version where it works.',l:1},
-      {t:'showing a generic error if it breaks.',l:2},
-      {t:'offering a graceful fallback and honest copy about limits.',l:3},
-      {t:'capturing the failure as a signal that teaches the system.',l:4}]},
-    {axis:'for',q:'You disclose that something is AI by…',o:[
-      {t:'not really — it just feels smart.',l:1},
-      {t:'mentioning it somewhere, if asked.',l:2},
-      {t:'labelling it clearly and explaining the benefit, not the tech.',l:3},
-      {t:'designing the whole trust model, including handoffs to humans.',l:4}]},
-    {axis:'for',q:'You judge an AI feature’s success by…',o:[
-      {t:'whether the demo looks impressive.',l:1},
-      {t:'engagement and usage counts.',l:2},
-      {t:'how often users accept vs. override the AI.',l:3},
-      {t:'edit / correction rate feeding back into the model and the UX.',l:4}]}
+  /* ---------- Quiz data ---------- */
+  const Q = [
+    { axis: 'with', q: 'When you open an AI tool to help with a design task, you usually…', o: [
+      { t: 'Type a quick one-off request and use whatever comes back.', l: 1 },
+      { t: 'Reach for a prompt you’ve used before and refine the tone a few times.', l: 2 },
+      { t: 'Point it at a context file you keep updated — brief, audience, voice, rules.', l: 3 },
+      { t: 'Kick off an agent or skill you built that runs several steps on its own.', l: 4 }] },
+    { axis: 'with', q: 'Your prototypes are usually…', o: [
+      { t: 'Static screens — I describe the AI behaviour in side notes.', l: 1 },
+      { t: 'Static, but I’ve written the copy and states with AI’s help.', l: 2 },
+      { t: 'Wired to a real model so I can feel the latency and variance.', l: 3 },
+      { t: 'Generated by a setup I built, then I curate the output.', l: 4 }] },
+    { axis: 'with', q: 'If AI vanished from your workflow tomorrow…', o: [
+      { t: 'I’d barely notice — I only dip in occasionally.', l: 1 },
+      { t: 'I’d miss it for a few specific tasks.', l: 2 },
+      { t: 'I’d feel it sharply — it’s woven through how I work.', l: 3 },
+      { t: 'Half my pipeline would stop — I’ve built systems on it.', l: 4 }] },
+    { axis: 'with', q: 'Other designers on the team…', o: [
+      { t: 'don’t really see how I use AI.', l: 1 },
+      { t: 'sometimes ask me for a prompt that worked.', l: 2 },
+      { t: 'borrow my context docs and my approach.', l: 3 },
+      { t: 'run the reusable skills and scaffolding I’ve built.', l: 4 }] },
+    { axis: 'for', q: 'When you design an AI feature, you start with…', o: [
+      { t: 'where to put the chatbot or the magic button.', l: 1 },
+      { t: 'whether the task wants automation, augmentation, or conversation.', l: 2 },
+      { t: 'what happens when the model is wrong or slow.', l: 3 },
+      { t: 'the feedback loop that makes the system better over time.', l: 4 }] },
+    { axis: 'for', q: 'Your designs handle AI failure by…', o: [
+      { t: '…they don’t — I design the version where it works.', l: 1 },
+      { t: 'showing a generic error if it breaks.', l: 2 },
+      { t: 'offering a graceful fallback and honest copy about limits.', l: 3 },
+      { t: 'capturing the failure as a signal that teaches the system.', l: 4 }] },
+    { axis: 'for', q: 'You disclose that something is AI by…', o: [
+      { t: 'not really — it just feels smart.', l: 1 },
+      { t: 'mentioning it somewhere, if asked.', l: 2 },
+      { t: 'labelling it clearly and explaining the benefit, not the tech.', l: 3 },
+      { t: 'designing the whole trust model, including handoffs to humans.', l: 4 }] },
+    { axis: 'for', q: 'You judge an AI feature’s success by…', o: [
+      { t: 'whether the demo looks impressive.', l: 1 },
+      { t: 'engagement and usage counts.', l: 2 },
+      { t: 'how often users accept vs. override the AI.', l: 3 },
+      { t: 'edit / correction rate feeding back into the model and the UX.', l: 4 }] }
   ];
-  const PERSONA={
-    with:{
-      1:{n:'The Tourist',b:'Drops in, asks for directions, heads off. Curious about AI but not yet committed — every visit starts fresh.',next:'Pick one task you do daily and keep a context file for it for two weeks. Build the habit before widening scope.'},
-      2:{n:'The Regular',b:'Has the usual order. Reliable and repeatable with a handful of trusted prompts — but every step is still by hand.',next:'Stop describing AI behaviour in notes — prototype with a real model so you design against how it actually behaves.'},
-      3:{n:'The Pilot',b:'Sets up the cockpit before takeoff. Flies with the model rather than at it, with context loaded and instruments watched.',next:'Turn your best repeated setup into a reusable skill the rest of the team can run — move from flying to building the plane.'},
-      4:{n:'The Conductor',b:'Doesn’t play every instrument. Sets the score, hands each section its part, and shapes the whole sound from the front.',next:'You’re at the top rung. Now lift the people around you and keep resetting the quality bar as the tools move.'}
+  const PERSONA = {
+    with: {
+      1: { n: 'The Tourist', b: 'Drops in, asks for directions, heads off. Curious about AI but not yet committed — every visit starts fresh.', next: 'Pick one task you do daily and keep a context file for it for two weeks. Build the habit before widening scope.' },
+      2: { n: 'The Regular', b: 'Has the usual order. Reliable and repeatable with a handful of trusted prompts — but every step is still by hand.', next: 'Stop describing AI behaviour in notes — prototype with a real model so you design against how it actually behaves.' },
+      3: { n: 'The Pilot', b: 'Sets up the cockpit before takeoff. Flies with the model rather than at it, with context loaded and instruments watched.', next: 'Turn your best repeated setup into a reusable skill the rest of the team can run — move from flying to building the plane.' },
+      4: { n: 'The Conductor', b: 'Doesn’t play every instrument. Sets the score, hands each section its part, and shapes the whole sound from the front.', next: 'You’re at the top rung. Now lift the people around you and keep resetting the quality bar as the tools move.' }
     },
-    for:{
-      1:{n:'The Magician',b:'Sells the trick. Dazzling on stage — but there’s nothing behind the curtain when the model misses.',next:'Before the happy path, design what happens when the AI is wrong. A fallback is the difference between trust and churn.'},
-      2:{n:'The Matchmaker',b:'Knows which task wants which pattern. Pairs automation, augmentation and conversation to the job instead of defaulting to chat.',next:'Add graceful fallbacks and honest copy about the AI’s limits — match the user’s mental model to what the system can really do.'},
-      3:{n:'The Diplomat',b:'Handles the hard moments with honesty. Keeps users’ trust when things break, slow down, or get uncertain.',next:'Close the loop: turn user corrections into signals that visibly improve the system over time.'},
-      4:{n:'The Architect',b:'Designs the whole loop and the quality gates around it — building for human eyes and for the agents acting on their behalf.',next:'Top rung. Now define the metrics and gates the rest of the studio designs against.'}
+    for: {
+      1: { n: 'The Magician', b: 'Sells the trick. Dazzling on stage — but there’s nothing behind the curtain when the model misses.', next: 'Before the happy path, design what happens when the AI is wrong. A fallback is the difference between trust and churn.' },
+      2: { n: 'The Matchmaker', b: 'Knows which task wants which pattern. Pairs automation, augmentation and conversation to the job instead of defaulting to chat.', next: 'Add graceful fallbacks and honest copy about the AI’s limits — match the user’s mental model to what the system can really do.' },
+      3: { n: 'The Diplomat', b: 'Handles the hard moments with honesty. Keeps users’ trust when things break, slow down, or get uncertain.', next: 'Close the loop: turn user corrections into signals that visibly improve the system over time.' },
+      4: { n: 'The Architect', b: 'Designs the whole loop and the quality gates around it — building for human eyes and for the agents acting on their behalf.', next: 'Top rung. Now define the metrics and gates the rest of the studio designs against.' }
     }
   };
-  const LNAME={with:{1:'Dabbler',2:'Operator',3:'Fluent',4:'Orchestrator'},for:{1:'Bolt-on',2:'Pattern-aware',3:'Trust & failure designer',4:'Systems & feedback designer'}};
+  const LNAME = { with: { 1: 'Dabbler', 2: 'Operator', 3: 'Fluent', 4: 'Orchestrator' }, for: { 1: 'Bolt-on', 2: 'Pattern-aware', 3: 'Trust & failure designer', 4: 'Systems & feedback designer' } };
 
-  let idx=0; const answers=new Array(Q.length).fill(null);
-  const stage=document.getElementById('qStage'), start=document.getElementById('qStart');
-  const qText=document.getElementById('qText'), qOpts=document.getElementById('qOpts'), qAxis=document.getElementById('qAxis');
-  const pfill=document.getElementById('pfill'), pcount=document.getElementById('pcount'), navHint=document.getElementById('navHint');
-  const backBtn=document.getElementById('backBtn');
+  /* ---------- Quiz flow (no start screen — straight to Q1) ---------- */
+  let idx = 0;
+  const answers = new Array(Q.length).fill(null);
+  const qText = document.getElementById('qText'), qOpts = document.getElementById('qOpts'), qAxis = document.getElementById('qAxis');
+  const pfill = document.getElementById('pfill'), pcount = document.getElementById('pcount');
 
-  function render(){
-    const item=Q[idx];
-    qAxis.className='qaxis '+(item.axis==='with'?'w':'f');
-    qAxis.innerHTML='<span class="dot '+(item.axis==='with'?'w':'f')+'"></span>'+(item.axis==='with'?'Workflow · with AI':'Product · for AI');
-    qText.textContent=item.q;
-    qOpts.className='opts '+(item.axis==='with'?'w':'f');
-    qOpts.innerHTML='';
-    item.o.forEach((op,i)=>{
-      const b=document.createElement('button');
-      b.className='opt'+(answers[idx]===i?' sel':'');
-      b.textContent=op.t; b.setAttribute('aria-pressed',answers[idx]===i);
-      b.addEventListener('click',()=>{answers[idx]=i;render();
-        setTimeout(()=>{ if(idx<Q.length-1){idx++;render();} else finish(); },220);});
+  function renderQ() {
+    const item = Q[idx];
+    const w = item.axis === 'with';
+    qAxis.className = 'qaxis ' + (w ? 'w' : 'f');
+    qAxis.innerHTML = '<span class="dot"></span>' + (w ? 'Designing with AI' : 'Designing for AI');
+    qText.textContent = item.q;
+    qOpts.className = 'opts ' + (w ? 'w' : 'f');
+    qOpts.innerHTML = '';
+    item.o.forEach((op, i) => {
+      const b = document.createElement('button');
+      b.className = 'opt' + (answers[idx] === i ? ' sel' : '');
+      b.textContent = op.t;
+      b.addEventListener('click', () => {
+        answers[idx] = i;
+        renderQ();
+        setTimeout(() => { if (idx < Q.length - 1) { idx++; renderQ(); } else finish(); }, 220);
+      });
       qOpts.appendChild(b);
     });
-    const pct=((idx+(answers[idx]!==null?1:0))/Q.length)*100;
-    pfill.style.width=pct+'%';
-    pfill.style.background=item.axis==='with'?'var(--with)':'var(--for)';
-    pcount.textContent=(idx+1)+' / '+Q.length;
-    backBtn.style.visibility=idx===0?'hidden':'visible';
-    navHint.textContent=answers[idx]!==null?'Saved — moving on':'Pick one to continue';
+    pfill.style.width = ((idx + (answers[idx] !== null ? 1 : 0)) / Q.length) * 100 + '%';
+    pfill.style.background = w ? 'var(--with)' : 'var(--for)';
+    pcount.textContent = (idx + 1) + ' / ' + Q.length;
   }
-  document.getElementById('startBtn').addEventListener('click',()=>{start.style.display='none';stage.style.display='block';idx=0;render();});
-  backBtn.addEventListener('click',()=>{if(idx>0){idx--;render();}});
 
-  function levelFor(axis){
-    const vals=Q.map((q,i)=>q.axis===axis?(answers[i]!=null?q.o[answers[i]].l:null):null).filter(v=>v!=null);
-    return Math.min(4,Math.max(1,Math.round(vals.reduce((a,b)=>a+b,0)/vals.length)));
-  }
-  function finish(){
-    const w=levelFor('with'), f=levelFor('for'), pw=PERSONA.with[w], pf=PERSONA.for[f];
-    document.getElementById('rWLvl').textContent='Level '+w+' · '+LNAME.with[w];
-    document.getElementById('rWName').textContent=pw.n;
-    document.getElementById('rWBlurb').textContent=pw.b;
-    document.getElementById('rWNext').innerHTML='<b>Level up →</b> '+pw.next;
-    document.getElementById('rFLvl').textContent='Level '+f+' · '+LNAME.for[f];
-    document.getElementById('rFName').textContent=pf.n;
-    document.getElementById('rFBlurb').textContent=pf.b;
-    document.getElementById('rFNext').innerHTML='<b>Level up →</b> '+pf.next;
-    const px=12+((w-1)/3)*76, py=12+((f-1)/3)*76;
-    const m=document.getElementById('rMarker'); m.style.left=px+'%'; m.style.bottom=py+'%';
-    m.style.background='linear-gradient(135deg,var(--with),var(--for))';
-    let quad;
-    if(w>=3&&f>=3) quad='AI-native — the goal corner';
-    else if(w>=3&&f<3) quad='Fast hands, flat products';
-    else if(w<3&&f>=3) quad='Sharp instincts, slow hands';
-    else quad='Experimenting';
-    document.getElementById('rQuad').textContent=quad;
-    document.getElementById('quizBody').classList.add('hide');
-    document.getElementById('qResult').classList.add('show');
-    modal.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-  }
-  document.getElementById('retakeBtn').addEventListener('click',()=>{
-    answers.fill(null); idx=0;
-    document.getElementById('qResult').classList.remove('show');
-    document.getElementById('quizBody').classList.remove('hide');
-    stage.style.display='none'; start.style.display='block';
-    modal.scrollTo({top:0,behavior:'auto'});
+  document.getElementById('openQuiz').addEventListener('click', () => {
+    idx = 0; answers.fill(null);
+    renderQ(); show('quiz'); scrollTo(0, 0);
   });
+  document.getElementById('quizBack').addEventListener('click', () => {
+    if (idx > 0) { idx--; renderQ(); } else show('guide');
+  });
+
+  function levelFor(axis) {
+    const vals = Q.map((q, i) => q.axis === axis ? (answers[i] != null ? q.o[answers[i]].l : null) : null).filter(v => v != null);
+    return Math.min(4, Math.max(1, Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)));
+  }
+
+  function showResult(w, f) {
+    const pw = PERSONA.with[w], pf = PERSONA.for[f];
+    document.getElementById('rWLvl').textContent = 'Level ' + w + ' · ' + LNAME.with[w];
+    document.getElementById('rWName').textContent = pw.n;
+    document.getElementById('rWBlurb').textContent = pw.b;
+    document.getElementById('rWNext').innerHTML = '<b>Level up →</b> ' + pw.next;
+    document.getElementById('rFLvl').textContent = 'Level ' + f + ' · ' + LNAME.for[f];
+    document.getElementById('rFName').textContent = pf.n;
+    document.getElementById('rFBlurb').textContent = pf.b;
+    document.getElementById('rFNext').innerHTML = '<b>Level up →</b> ' + pf.next;
+    markLadder(w, f);
+    show('result'); scrollTo(0, 0);
+  }
+
+  // Colour your rung on both ladders (node fill + name tint + "You" tag).
+  function markLadder(w, f) {
+    document.querySelectorAll('.track.with .rung').forEach(r => {
+      const yours = Number(r.dataset.level) === w;
+      r.classList.toggle('yours', yours);
+      r.querySelector('.you-tag').hidden = !yours;
+    });
+    document.querySelectorAll('.track.for .rung').forEach(r => {
+      const yours = Number(r.dataset.level) === f;
+      r.classList.toggle('yours', yours);
+      r.querySelector('.you-tag').hidden = !yours;
+    });
+  }
+
+  function finish() {
+    const w = levelFor('with'), f = levelFor('for');
+    persistResult(w, f);
+    showResult(w, f);
+  }
+
+  /* ---------- Persistence ---------- */
+  function persistResult(w, f) {
+    const payload = { with_level: w, for_level: f, answers: answers.slice(), updated_at: new Date().toISOString() };
+    try { localStorage.setItem(LS_AI_RESULT, JSON.stringify(payload)); } catch (e) {}
+    if (sb && USER) {
+      sb.from('ai_evaluations').upsert({
+        user_id: USER.id, with_level: w, for_level: f,
+        answers: answers.slice(), updated_at: payload.updated_at
+      }, { onConflict: 'user_id' }).then(({ error }) => {
+        if (error) console.error('[supabase] save ai result:', error.message);
+      });
+    }
+  }
+
+  // On load: pull the saved result (DB first, LS fallback) → highlight the ladder.
+  function loadSavedResult() {
+    const applyLS = () => {
+      try {
+        const r = JSON.parse(localStorage.getItem(LS_AI_RESULT) || 'null');
+        if (r) markLadder(r.with_level, r.for_level);
+      } catch (e) {}
+    };
+    if (sb && USER) {
+      sb.from('ai_evaluations').select('with_level,for_level').eq('user_id', USER.id).maybeSingle()
+        .then(({ data }) => { if (data) markLadder(data.with_level, data.for_level); else applyLS(); });
+    } else applyLS();
+  }
+
+  /* ---------- Result actions ---------- */
+  document.getElementById('resultBack').addEventListener('click', () => show('guide'));
+  document.getElementById('backToLadders').addEventListener('click', () => { show('guide'); scrollTo(0, 0); });
+  document.getElementById('retakeBtn').addEventListener('click', () => {
+    idx = 0; answers.fill(null);
+    renderQ(); show('quiz'); scrollTo(0, 0);
+  });
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    const w = document.getElementById('rWName').textContent, f = document.getElementById('rFName').textContent;
+    const wl = document.getElementById('rWLvl').textContent, fl = document.getElementById('rFLvl').textContent;
+    const text = `My AI-native personas — with AI: ${w} (${wl}) · for AI: ${f} (${fl}). Find yours: ${location.origin + location.pathname}`;
+    navigator.clipboard.writeText(text).then(() => {
+      const b = document.getElementById('shareBtn');
+      const old = b.textContent;
+      b.textContent = 'Copied ✓';
+      setTimeout(() => { b.textContent = old; }, 1600);
+    });
+  });
+
+  boot();
 </script>
 </body>
 </html>
