@@ -3,7 +3,7 @@
   "roles": [
     "Intern",
     "Associate Product Designer",
-    "Product Designer",
+    "Product Designer II",
     "Senior Product Designer",
     "Staff Product Designer",
     "Principal Product Designer",
@@ -28,7 +28,7 @@
           "Includes edge cases, empty states and errors in the work, not just the happy path.",
           "Treats microcopy as part of design."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Owns whole flows end-to-end reliably without needing a lot of direction",
           "Asks the right questions to sharpen a fuzzy brief, before solving.",
           "Knows the common UX patterns well enough to pick the right one and adapt it.",
@@ -91,7 +91,7 @@
           "Treats motion and interaction as part of design.",
           "Visual decisions are deliberate, not default."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Strong craft bar, held across projects. Supports in raising the bar.",
           "Hits a high craft bar consistently. Type, layout, spacing, hierarchy & motion design are reliably strong.",
           "Restraint where it helps, polish where it earns its place.",
@@ -148,7 +148,7 @@
           "Says why one direction is better, with reasoning others can understand.",
           "Updates the call when shown a better one."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Picks well between plausible directions on clear briefs.",
           "Holds a POV with confidence and stays open to being challenged.",
           "Spots AI slop and pattern-matched borrowing in their own work",
@@ -207,7 +207,7 @@
           "Comfortable using and extending an existing design system.",
           "Brings up upstream and downstream impact in review, not just the screen they made."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Thinks about the whole experience around the work.",
           "Knows when the right answer isn't just an interface. (Can be process, automation, copy tweaks).",
           "Considers second order effects of a change. Asks what shifts downstream.",
@@ -265,7 +265,7 @@
           "Reads the analytics dashboard for their project and uses what they see in design choices.",
           "Catches themselves when they're treating one user quote as a trend. Aware whenever biases surface, and curbs them from influencing how evidence is communicated."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Brings evidence into design decisions.",
           "Designs directly point to rationale and user insights",
           "Calls what to test and what to ship without testing.",
@@ -323,7 +323,7 @@
           "Asks engineering questions early. Confirms what's buildable before designing too far in.",
           "Engineering can build from their work without major rework."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Ships their own work end-to-end. Engineering and PMs don't chase them.",
           "Anticipates build constraints during design. Engages engineering when stuck.",
           "Stays involved through build. Tests and catches issues before launch. Owns the work until it's live."
@@ -379,7 +379,7 @@
           "Actively learns from their peers on various AI workflows and implements in their work.",
           "Spots obvious AI slop in their own work before review."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Designs AI-driven surfaces competently. Uses AI fluently in their own craft.",
           "Designs AI-driven surfaces. Accounts for partial answers, latency and failure modes.",
           "Has a working understanding of how AI products work. Context, prompts, tool use, common failure patterns.",
@@ -439,7 +439,7 @@
           "Knows when to handle a stakeholder question and when to flag to their lead.",
           "Walks clients through their work without freezing. Answers questions in the moment."
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Presents work to clients and lands the recommendation.",
           "Reads the room well. Knows when they've the client's buy-in, vs. when they quietly disengage.",
           "Keeps the momentum going. Takes, and gives actionable feedback.",
@@ -497,7 +497,7 @@
           "Asks why a feature matters before how it should look.",
           "Makes an active effort to start building product sense beyond design skills"
         ],
-        "Product Designer": [
+        "Product Designer II": [
           "Connects design choices to user outcomes.",
           "Thinks about the client’s product and where their own work fits into it.",
           "Asks why before what.",
@@ -552,7 +552,7 @@
         "Associate Product Designer": [
           "-"
         ],
-        "Product Designer": [],
+        "Product Designer II": [],
         "Senior Product Designer": [],
         "Staff Product Designer": [
           "-"
@@ -577,7 +577,7 @@
       "cells": {
         "Intern": [],
         "Associate Product Designer": [],
-        "Product Designer": [],
+        "Product Designer II": [],
         "Senior Product Designer": [],
         "Staff Product Designer": [],
         "Principal Product Designer": [],
@@ -614,7 +614,7 @@
         "roles": [
           "Intern",
           "Associate Product Designer",
-          "Product Designer",
+          "Product Designer II",
           "Senior Product Designer",
           "Staff Product Designer",
           "Principal Product Designer"

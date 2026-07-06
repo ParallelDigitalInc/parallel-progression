@@ -86,9 +86,9 @@
   const RATES = ['building', 'established', 'leading'];
   const RANK = { building: 1, established: 2, leading: 3 };
 
-  const FALLBACK_ROLES = ['Intern', 'Associate Product Designer', 'Product Designer', 'Senior Product Designer',
+  const FALLBACK_ROLES = ['Intern', 'Associate Product Designer', 'Product Designer II', 'Senior Product Designer',
     'Staff Product Designer', 'Principal Product Designer', 'Design Lead', 'Associate Design Director', 'Design Director'];
-  const CUR_OPTIONS = ['Product Designer', 'Senior Product Designer', 'Staff Product Designer',
+  const CUR_OPTIONS = ['Product Designer II', 'Senior Product Designer', 'Staff Product Designer',
     'Principal Product Designer', 'Design Lead', 'Associate Design Director'];
   const DES_OPTIONS = CUR_OPTIONS.concat(['Design Director']);
 
@@ -98,7 +98,7 @@
   const S = {
     route: 'boot',                     // boot | landing | app | admin
     view: 'tripod', tview: 'compare',  // 'tripod' slot hosts the spider layout; 'table' the table view
-    cur: 'Product Designer', des: 'Senior Product Designer',
+    cur: 'Product Designer II', des: 'Senior Product Designer',
     open: { 'ux-design-ideation': true }, ratings: {}, notes: {},
     focus: 'ux-design-ideation', modal: false, assess: false, step: 0, onboard: false,
     adminData: null, adminError: null, chipOpen: false, adminView: 'progression',

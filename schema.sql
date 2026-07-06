@@ -23,7 +23,7 @@ create table if not exists public.users (
   id uuid primary key references auth.users (id) on delete cascade,
   email text unique not null,
   full_name text,
-  role text default 'Product Designer',
+  role text default 'Product Designer II',
   desired_role text default 'Senior Product Designer',
   created_at timestamptz not null default now()
 );
@@ -103,3 +103,12 @@ create policy "ai: update own"
   on public.ai_evaluations for update
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- ---------- Migration 2026-07-06: rename "Product Designer" → "Product Designer II" ----------
+-- The app now uses "Product Designer II" everywhere. Run this block once to
+-- rename existing rows; without it, roster lookups miss and those designers
+-- fall back to defaults on login.
+update public.roster set role = 'Product Designer II' where role = 'Product Designer';
+update public.users set role = 'Product Designer II' where role = 'Product Designer';
+update public.users set desired_role = 'Product Designer II' where desired_role = 'Product Designer';
+update public.self_evaluations set role_at_eval = 'Product Designer II' where role_at_eval = 'Product Designer';

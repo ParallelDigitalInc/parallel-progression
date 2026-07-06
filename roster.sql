@@ -19,13 +19,13 @@ create policy "roster: authenticated read"
   using (auth.role() = 'authenticated');
 
 insert into public.roster (email, role) values
-  ('ria.gupta@parallelhq.com',      'Product Designer'),
-  ('sanoop.menon@parallelhq.com',   'Product Designer'),
-  ('nupra.dharod@parallelhq.com',   'Product Designer'),
-  ('sanchari.saha@parallelhq.com',  'Product Designer'),
-  ('kankshyat@parallelhq.com',      'Product Designer'),
-  ('mallika@parallelhq.com',        'Product Designer'),
-  ('nikhilkumar@parallelhq.com',    'Product Designer'),
+  ('ria.gupta@parallelhq.com',      'Product Designer II'),
+  ('sanoop.menon@parallelhq.com',   'Product Designer II'),
+  ('nupra.dharod@parallelhq.com',   'Product Designer II'),
+  ('sanchari.saha@parallelhq.com',  'Product Designer II'),
+  ('kankshyat@parallelhq.com',      'Product Designer II'),
+  ('mallika@parallelhq.com',        'Product Designer II'),
+  ('nikhilkumar@parallelhq.com',    'Product Designer II'),
   ('sushma.bhandari@parallelhq.com','Senior Product Designer'),
   ('samridhi@parallelhq.com',       'Senior Product Designer'),
   ('adil@parallelhq.com',           'Senior Product Designer'),
