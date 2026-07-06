@@ -621,17 +621,17 @@
         ],
         "legs": [
           "ux-design-ideation",
-          "taste-judgement",
+          "visual-craft",
           "product-sense"
         ],
         "head": [
-          "visual-craft",
+          "taste-judgement",
           "systems-thinking",
           "data-evidence",
           "shipping-delivery",
           "influence"
         ],
-        "note": "Legs explicitly specified for PD, SPD, Staff PD, Principal PD; same composition applied to Intern and Associate PD (not separately specified)."
+        "note": "Legs for IC: UX Design & Ideation, Visual Craft, Product Sense (Taste & Judgement moved to the head 2026-07-06 per Shreya). Applied to Intern and Associate PD as well."
       },
       "lead_plus": {
         "label": "Lead+ track",

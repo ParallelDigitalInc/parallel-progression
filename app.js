@@ -40,8 +40,8 @@
   // track: IC (PD…Principal) vs Lead+ (Design Lead, ADD, DD). Each track has its
   // own three legs and its own head, so the whole rubric reshapes when you switch.
   const IC_FALLBACK = {
-    legs: ['ux-design-ideation', 'taste-judgement', 'product-sense'],
-    head: ['visual-craft', 'systems-thinking', 'data-evidence', 'shipping-delivery', 'influence']
+    legs: ['ux-design-ideation', 'visual-craft', 'product-sense'],
+    head: ['taste-judgement', 'systems-thinking', 'data-evidence', 'shipping-delivery', 'influence']
   };
   function trackKeyFor(role) {
     const g = DATA && DATA.tripod && DATA.tripod.groups;
