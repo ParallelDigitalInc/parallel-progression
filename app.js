@@ -218,12 +218,18 @@
           .select('role').eq('email', (USER.email || '').toLowerCase()).maybeSingle();
         if (r && CUR_OPTIONS.includes(r.role)) {
           S.cur = r.role;
-          const ROLES = roles();
-          if (ROLES.indexOf(S.des) <= ROLES.indexOf(S.cur)) {
-            S.des = ROLES[Math.min(ROLES.indexOf(S.cur) + 1, ROLES.length - 1)];
+          // Bump desired from DES_OPTIONS (the org ladder), NOT the raw rubric
+          // roles: that list still carries Intern and Associate PD, which the
+          // org doesn't use, and an early build wrote one of those into the DB.
+          if (DES_OPTIONS.indexOf(S.des) <= DES_OPTIONS.indexOf(S.cur)) {
+            S.des = DES_OPTIONS[Math.min(DES_OPTIONS.indexOf(S.cur) + 1, DES_OPTIONS.length - 1)];
           }
           if (!prof || prof.role !== S.cur) sb.from('users').update({ role: S.cur }).eq('id', USER.id).then(() => {});
         }
+        // Self-heal stale rows: if the stored desired role isn't on the org
+        // ladder (e.g. "Associate Product Designer"), write back the corrected
+        // pair so Admin stops showing roles that don't exist here.
+        if (prof && prof.desired_role && !DES_OPTIONS.includes(prof.desired_role)) persistProfile();
         const { data: evals } = await sb.from('self_evaluations')
           .select('competency_slug,rating,evidence_note').eq('user_id', USER.id);
         if (evals) {
@@ -1329,17 +1335,19 @@
   root.addEventListener('change', e => {
     const sel = e.target.closest('select[data-role]');
     if (!sel) return;
-    const ROLES = roles();
+    // All comparisons and bumps run on DES_OPTIONS (the org ladder), never the
+    // raw rubric roles: those include Intern and Associate PD, which the org
+    // doesn't use and must never be written to the DB.
     if (sel.dataset.role === 'cur') {
       const nc = sel.value;
       const patch = { cur: nc };
-      const ci = ROLES.indexOf(nc);
-      if (ROLES.indexOf(S.des) <= ci) patch.des = ROLES[Math.min(ci + 1, ROLES.length - 1)];
+      const ci = DES_OPTIONS.indexOf(nc);
+      if (DES_OPTIONS.indexOf(S.des) <= ci) patch.des = DES_OPTIONS[Math.min(ci + 1, DES_OPTIONS.length - 1)];
       setState(patch);
       persistProfile();
     } else {
       const nd = sel.value;
-      if (ROLES.indexOf(nd) <= ROLES.indexOf(S.cur)) { render(); return; }
+      if (DES_OPTIONS.indexOf(nd) <= DES_OPTIONS.indexOf(S.cur)) { render(); return; }
       setState({ des: nd });
       persistProfile();
     }
